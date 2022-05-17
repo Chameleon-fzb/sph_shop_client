@@ -106,7 +106,11 @@ module.exports = defineConfig({
    //根据远程 分支创建
    git checkout -b myMaster origin/myMaster
 
-git branch 查看分支
+    git branch 查看分支
+4) 将个人开发分支合并到master
+ git checkout master
+ git merge myMaster
+ git push
 ```
 
 
