@@ -78,11 +78,17 @@ module.exports = defineConfig({
    https://github.com/Chameleon-fzb/sph_shop_client.git
   
 3) 将本地仓库推送到远程仓库
-git remote add origin url
-git push -u origin master
+   git remote add origin url
+   git push -u origin master
 
 4) 本地代码有修改,要提交到本地仓库,推送到仓库
-git add .
-git commit -m "xxx"
-git push
+   git add .
+   git commit -m "xxx"
+   git push origin master
+
+5) 远程代码有修改,拉取到本地
+   git pull
+
+6) 将远程仓库的代码clone到本地
+   git clone url
 ```
