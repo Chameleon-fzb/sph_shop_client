@@ -91,4 +91,23 @@ module.exports = defineConfig({
 
 6) 将远程仓库的代码clone到本地
    git clone url
+
+多分支
+
+1) 创建本地个人开发分支,并推送到远程
+   git checkout -b myMaster
+   git push -u origin myMaster
+2) 在个人开发分支上开发,并推送到远程
+   git add .
+   git commit -m "xxx"
+   git push
+3) 根据远程个人开发分支创建本地个人开发分支
+   git pull(如果分支是在clone后创建得才需要执行)
+   //根据远程 分支创建
+   git checkout -b myMaster origin/myMaster
+
+git branch 查看分支
 ```
+
+
+
