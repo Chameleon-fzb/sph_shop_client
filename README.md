@@ -279,5 +279,106 @@ $route: 当前路由信息对象,包含当前路由相关数据的对象
  yarn add axios nprogress
 
  axios 二次封装
+
+
+import axios from 'axios'
+import nprogress from 'nprogress'
+import 'nprogress/nprogress.css'
+/*
+axios二次封装 
+ */
+const service = axios.create({
+	baseURL: '/api',
+	timeout: 20000
+})
+
+service.interceptors.request.use(config => {
+	nprogress.start()
+	return config
+})
+
+service.interceptors.response.use(
+	response => {
+		nprogress.done()
+		return response.data
+	},
+	error => {
+		//统一处理请求错误
+		alert(error.message || '未知请求错误')
+		return Promise.reject(error)
+	}
+)
+
+export default service
  
  ```
+
+## 设置代理
+```js
+//在vue.config.js中添加
+//只在开发环境中起作用
+// 设置代理
+	devServer: {
+		// port: 8080, // 端口
+
+		//只用于开发环境
+		proxy: {
+			'/api': {
+				//只对请求路由以/api开头的请求进行代理转发
+				target: 'http://gmall-h5-api.atguigu.cn',
+				changeOrigin: true //支持跨域
+			}
+		}
+	}
+```
+## vuex的多模块编程
+
+### 单模块
+- 需要管理状态比较多时,mutations/actions模块会变得比较大,难以管理
+- 如果添加新的数据管理,需要修改现在的文件(不断向其中添加内容)
+
+### 多模块
+- 对各个功能模块的数据分别管理,这样更加具有扩展性
+
+### 什么情况下使用多模块
+- 需要vuex管理的数据比较多的时候,考虑使用
+```
+1) 安装vuex
+   // yarn add vuex@next
+
+2) 安装vuex 配置vuex 配置模块
+   import Vue from 'vue'
+   import Vuex from 'vuex'
+   import modules from './modules'
+
+   Vue.use(Vuex)
+
+   const state = {}
+   const mutations = {}
+   const actions = {}
+   const getters = {}
+
+   export default new Vuex.Store({
+	   state,
+	   mutations,
+	   actions,
+   	getters,
+	   modules
+   })
+3) 注册vuex
+   import store from './store'  
+   new Vue({
+	render: h => h(App),
+	el: '#app',
+	router, //注册路由器 ==> 所有的组件都可以直接访问2个对象:$router 和 $route
+	store
+})
+
+4) store对象的功能
+   读取数据
+   - store.state.xxx
+   - store.getters.yyy
+   更新数据
+   - store.dispatch(action名称,data)
+   - store.commit(mutation名称,data)
+```

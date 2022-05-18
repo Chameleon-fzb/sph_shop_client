@@ -25,15 +25,8 @@ import Like from './Like'
 import ListContainer from './ListContainer'
 import Rank from './Rank'
 import TodayRecommend from './TodayRecommend'
-import { reqCategoryList } from '@/api/index'
 export default {
   name: 'Home',
-  data() {
-    return {
-      result: []
-    }
-  }
-  ,
   components: {
     Brand,
     Floor,
@@ -41,13 +34,6 @@ export default {
     ListContainer,
     Rank,
     TodayRecommend,
-  },
-  async mounted() {
-    const result = await reqCategoryList()
-    if (result.code === 200) {
-      this.result = result.data
-    }
-
   }
 }
 </script>
