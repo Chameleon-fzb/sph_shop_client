@@ -114,4 +114,92 @@ module.exports = defineConfig({
 ```
 
 
+```vue
+<template>
+</template>
+<script>
+export default {
+  name: 'Header',
 
+}
+</script>
+<style lang="less" scoped>
+</style>
+```
+##   vscode下的vue文件
+   template蓝线提示 
+   在 jscofig.js 添加 "jsx":"preserve",
+   ```json
+   {"compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "baseUrl": "./",
+    "jsx":"preserve",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
+    },
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ]
+  }
+}
+```
+## 引入vue-router
+```
+1) 安装vue-router 引入vueRouter
+2) 定义一级路由组件: Home/Search/Register/Login
+3) 创建路由器 配置路由 配置路由器
+4) 注意组件中路由两个对象
+$router:路由器对象,包含一些用于路由跳转的方法:
+    push()/replace()/back()
+$route: 当前路由信息对象,包含当前路由相关数据的对象
+    path/name/query/params/meta
+
+5) 路由跳转的两种方式
+   - 声明式路由导航/跳转: <router-link :to="{name,path,params:{},query:{}}" replace></router-link> `
+      默认使用 push方法 如果要使用replace 直接在标签内部使用replace
+   - 编程式路由导航/跳转: 
+      字符串形式: 仅适用只有没有params参数时使用
+         this.$router.push/replace(`/search/${keyword}?keyword2=${keyword.toUpperCase()}`)
+
+      对象形式: 适用所有情况
+         const location = {
+            name'',
+            path:'/',
+            params:{},
+            query:{}
+         }
+
+      this.$router.push/replace(location)
+   
+      this.$router.push(location)/replace(location)
+
+6) 路由组件传参
+   routes:[
+      {
+         name:'search',
+         path:'/search',
+         components:Search,
+         props:布尔值/对象/函数
+      }
+   ]
+   - 布尔值
+   props:true 默认将params参数映射
+   - 对象(可以映射一些自定义属性)
+   props:{next:false,name:'xxx'}
+
+   - 函数(可以映射query,params,自定义属性)
+   props:(route)=>({
+      keyword:route.params.keyword,
+      keyword2:route.query.keyword2
+   })
+
+```
+## 在vue中使用less
+安装  yarn add less-loader@7.3.0 less@4.1.1
