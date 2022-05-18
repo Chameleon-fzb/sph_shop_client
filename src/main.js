@@ -2,9 +2,12 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import router from './router'
+import TypeNav from '@/components/TypeNav'
 
 //不显示非生产环境打包的提示
 Vue.config.productionTip = false
+//全局注册组件
+Vue.component(TypeNav.name, TypeNav)
 
 new Vue({
 	render: h => h(App),
