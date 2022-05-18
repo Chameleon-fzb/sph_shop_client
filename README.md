@@ -277,4 +277,7 @@ $route: 当前路由信息对象,包含当前路由相关数据的对象
  请求进度条的实现
  1) 下载依赖包
  yarn add axios nprogress
+
+ axios 二次封装
+ 
  ```

@@ -1,11 +1,11 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
-import 'nprogress/'
+import 'nprogress/nprogress.css'
 /*
 axios二次封装 
  */
-export const service = axios.create({
-	baseUrl: 'http://gmall-h5-api.atguigu.cn/api',
+const service = axios.create({
+	baseURL: '/api',
 	timeout: 20000
 })
 
@@ -25,3 +25,5 @@ service.interceptors.response.use(
 		return Promise.reject(error)
 	}
 )
+
+export default service
