@@ -10,11 +10,13 @@ export default [
 	},
 	{
 		path: '/login',
-		component: Login
+		component: Login,
+		meta: { isHideFooter: true }
 	},
 	{
 		path: '/register',
-		component: Register
+		component: Register,
+		meta: { isHideFooter: true }
 	},
 	{
 		name: 'search',

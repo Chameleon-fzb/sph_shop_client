@@ -150,6 +150,9 @@ export default {
   }
 }
 ```
+## 在vue中使用less
+安装  yarn add less-loader@7.3.0 less@4.1.1
+
 ## 引入vue-router
 ```
 1) 安装vue-router 引入vueRouter
@@ -200,6 +203,71 @@ $route: 当前路由信息对象,包含当前路由相关数据的对象
       keyword2:route.query.keyword2
    })
 
+7) 路由重复导航错误(Uncaught (in promise) NavigationDuplicated)
+   - 原因
+       如果没有通过参数指定回调函数就返回一个promise来指定成功或者事变的回调
+       它内部会判断跳转路径和参数没有变化的时候,就会抛出一个失败的promise
+   路由跳转函数完整写法
+   this.$router.push(location,onComplete?,onAbort?)
+   this.$router.push(location).then(onComplete).catch(onAbort)
+   如果不传成功的回调或失败的回调,重复导航会返回一个错误的promise
+   - 解决方法一(传入成功回调)
+   this.$router.push(location,()=>{})
+
+   - 解决方法二(用catch处理错误的promise)
+   this.$router.push(location).catch(()=>{})
+
+   - 解决方法三(重写方法)
+     const originPush = VueRouter.prototype.push
+     const originReplace = VueRouter.prototype.replace
+
+      VueRouter.prototype.push = function (location, onResolve, onReject) {
+	      if (onResolve || onReject)
+		      return originPush.call(this, location, onResolve, onReject)
+	      return originPush.call(this, location).catch(err => {
+		      if (VueRouter.isNavigationFailure(err)) {
+			      return err
+		      }
+		      return Promise.reject(err)
+	      })
+      }
+
+      VueRouter.prototype.replace = function (location, onResolve, onReject) {
+	      if (onResolve || onReject) {
+		      return originReplace.call(this, location, onResolve, onReject)
+	      }
+	      return originReplace.call(this, location).catch(err => {
+		      if (VueRouter.isNavigationFailure(err)) {
+			      return err
+		      }
+		      return Promise.reject(err)
+	      })
+      }
+
+
 ```
-## 在vue中使用less
-安装  yarn add less-loader@7.3.0 less@4.1.1
+### 使用路由meta属性
+- 在登录和注册界面有页面自己的footer 所以在这两个页面不需要显示footer组件
+- 使用meta添加自定义属性isHideFooter:true
+- ```js
+  {
+		path: '/login',
+		component: Login,
+		meta: { isHideFooter: true }
+	},
+	{
+		path: '/register',
+		component: Register,
+		meta: { isHideFooter: true }
+	},
+   ```
+   ```vue
+<template>
+  <div id="app">
+    <Header />
+    <!-- 所有的一级路由都在此显示 -->
+    <router-view></router-view>
+    <Footer v-show="!$route.meta.isHideFooter" />
+  </div>
+</template>
+ ```

@@ -2,7 +2,7 @@
 路由器对象
  */
 import Vue from 'vue'
-import VueRouter from 'vue-router'
+import VueRouter from './vueRouter'
 
 import routes from '@/router/routes'
 //安装Vue插件
