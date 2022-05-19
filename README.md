@@ -381,4 +381,74 @@ export default service
    更新数据
    - store.dispatch(action名称,data)
    - store.commit(mutation名称,data)
+
+5) 组件获取vuex中的数据
+
 ```
+
+## 三级列表的交互
+
+1) 点击分类项跳转到搜索界面,携带分类的id与分类名称
+   实现: 使用声明式路由导航
+   问题: 显示太慢
+   原因:太多了,产生组件对象太多了
+   ```vue <router-link>
+    <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">
+      {{ c1.categoryName }}
+    </router-link>
+   ```
+2) 使用编程式导航代替声明式导航
+   好处: 显示更快
+   原因: 不用产生router-link的组件对象
+   问题: 每个分类项都绑定了点击监听,数量太多
+   ```vue
+   <a href="javascript:;" @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{ c1.categoryName }}</a>
+   ```
+3) 使用事件委托/委派/代理
+   给所有的分类项的父元素绑定监听,根据event.target得到分类项
+   只需要绑定一个监听
+   问题:不知道你点击的是哪个分类项
+   解决:利用标签的自定义属性data data-xxx="" 然后使用target.dataset 
+   注意:**dataset中属性名都会变成小写**
+## 三级列表显示子列表
+
+
+1) 设计一个标识当前需要显示子列表的分类项的下标:currentIndex=-1
+   - 在一级分类项上 为数字
+   - 离开 为-1
+2) 定义当前分类项的样式类:active
+3) 给每一个分类项div绑定mouseenter 监听 ==> this.currentIndex = index
+4) 给包含所有分类项和标题的父元素绑定mouseleave监听
+
+### 优化三级列表显示
+问题:在快速滑动时 mouseenter 的事件高频触发,导致数据currentIndex高频更新
+解决:利用lodash 的 throttle进行函数节流
+
+安装 lodash 
+yarn add lodash
+
+_.throttle(func, [wait=0], [options=])
+func (Function): 要节流的函数。
+[wait=0] (number): 需要节流的毫秒。
+[options=] (Object): 选项对象。
+[options.leading=true] (boolean): 指定调用在节流开始前。
+[options.trailing=true] (boolean): 指定调用在节流结束后。
+```js
+import _  from 'lodash'
+// 直接引入打包较大
+```
+<!-- 使用按需引入 -->
+```js
+import { throttle } from 'lodash'
+```
+
+### 三级列表显示bug
+快速移出分类项,最后一次事件延迟处理,导致二级列表显示
+
+1) 解决方法 使用{trailing=false}
+   但是在分类项里移动的时候,分类项会显示在上一次位置
+   由于最后一次事件没有延迟处理
+2) 使用标识
+  currentIndex=-2 离开div
+  currentIndex=-1 没离开div但是不再一级列表中
+  currentIndex= 下标 在一级列表上

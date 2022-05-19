@@ -2,7 +2,47 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <h2 class="all">全部商品分类</h2>
+      <div @mouseleave="hideFirst">
+        <h2 class="all">全部商品分类</h2>
+        <div class="sort">
+          <div class="all-sort-list2" @click="toSearch">
+            <div class="item" v-for="(c1, index) in CategoryList" :key="c1.categoryId"
+              :class="{ active: currentIndex === index }" @mouseenter="showSubList(index)">
+              <h3>
+                <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">
+                {{ c1.categoryName }}
+              </router-link> -->
+                <!-- <a href="javascript:;"
+                @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{ c1.categoryName }}</a> -->
+                <a href="javascript:;" :data-categoryName="c1.categoryName"
+                  :data-category1Id="c1.categoryId">{{ c1.categoryName }}</a>
+              </h3>
+              <div class="item-list clearfix">
+                <div class="subitem" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
+                  <dl class="fore">
+                    <dt>
+                      <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">
+                      {{ c2.categoryName }}
+                    </router-link> -->
+                      <a href="javascript:;" :data-categoryName="c2.categoryName"
+                        :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
+                    </dt>
+                    <dd>
+                      <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
+                        <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">
+                        {{ c3.categoryName }}
+                      </router-link> -->
+                        <a href="javascript:;" :data-categoryName="c3.categoryName"
+                          :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
+                      </em>
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -13,40 +53,58 @@
         <a href="###">有趣</a>
         <a href="###">秒杀</a>
       </nav>
-      <div class="sort">
-        <div class="all-sort-list2">
-          <div class="item" v-for="(c1, index) in CategoryList" :key="c1.categoryId">
-            <h3>
-              <a href="">{{ c1.categoryName }}</a>
-            </h3>
-            <div class="item-list clearfix">
-              <div class="subitem" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
-                <dl class="fore">
-                  <dt>
-                    <a href="">{{ c2.categoryName }}</a>
-                  </dt>
-                  <dd>
-                    <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
-                      <a href="">{{ c3.categoryName }}</a>
-                    </em>
-                  </dd>
-                </dl>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+import { throttle } from 'lodash'
 export default {
   name: 'TypeNav',
+  data() {
+    return {
+      /* -1 离开了,不显示二级菜单
+         0-n 显示对应索引的二级菜单
+       */
+      currentIndex: -1
+    }
+  },
   computed: {
     ...mapState({ CategoryList: state => state.home.CategoryList.slice(0, 15) || [] })
-  }
+  },
+  methods: {
+    //跳转到搜索界面
+    toSearch(e) {
+      const target = e.target
+      if (target.tagName.toUpperCase() === 'A') {
+        const { categoryname, category1id, category2id, category3id } = target.dataset
+        const query = {
+          categoryName: categoryname
+        }
+        if (category1id) {
+          query.category1Id = category1id
+        } else if (category2id) {
+          query.category2Id = category2id
+        } else if (category3id) {
+          query.category3Id = category3id
+        }
+        const location = {
+          name: 'search',
+          query
+        }
+        this.$router.push(location)
+      }
+
+    },
+    showSubList: throttle(function (index) {
+      this.currentIndex = index
+    }, 200),
+    hideFirst() {
+      this.currentIndex = -1
+    }
+  },
 }
 </script>
 
@@ -161,7 +219,14 @@ export default {
             }
           }
 
-          &:hover {
+          // &:hover {
+          //   .item-list {
+          //     display: block;
+          //   }
+          // }
+          &.active {
+            background-color: #ddd;
+
             .item-list {
               display: block;
             }
