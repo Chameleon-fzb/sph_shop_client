@@ -487,3 +487,110 @@ import { throttle } from 'lodash'
       height: 0;
     }
 ```
+
+## 首页轮播
+- 使用swiper和vue-awesome-swiper
+  安装 yarn add swiper@5 
+
+在ListContainer中使用 引入创建swiper对象
+ 实现静态的轮播
+
+ ```html
+  <div class="swiper-container" ref="swiper">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <img src="./images/banner1.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img src="./images/banner2.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img src="./images/banner3.jpg" />
+            </div>
+            <div class="swiper-slide">
+              <img src="./images/banner4.jpg" />
+            </div>
+          </div>
+          <!-- 如果需要分页器 -->
+          <div class="swiper-pagination"></div>
+
+          <!-- 如果需要导航按钮 -->
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+ ```
+
+```js
+import Swiper from 'swiper'
+import 'swiper/css/swiper.css'
+
+mounted() {
+    new Swiper(this.$refs.swiper, {
+      direction: 'horizontal',//水平切换选项
+      loop: true,//循环模式
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false//不可打断自动轮播
+      },
+      //分页器
+      pagination: {
+        el: '.swiper-pagination'
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        pervEl: '.swiper-button-prev'
+      }
+    })
+  }
+
+```
+
+### 使用动态获取数据实现轮播图
+- 由于swiper对象必须在列表显示之后创建才有效果
+- 在mounted生命周期函数中创建swiper对象时 可能还没取得数据
+- 在watch中监视是否获得数据,同样是没有效果 因为 数据列表还没显示
+   **vue中数据变化了 ==> 同步调用监视的回调==>最后异步更新界面**
+解决办法
+1) 使用watch + vm.$nextTick([callback])
+   - 将回调延迟到下次Dom更新循环后执行,在修改数据之后立即使用它,它会等到下次dom更新
+```js
+    watch: {
+    bannerList() {//此时只是数据有了,但是界面没有更新
+      this.$nextTick(() => {
+        new Swiper(this.$refs.swiper, {
+          direction: 'horizontal',//水平切换选项
+          loop: true,//循环模式
+          autoplay: {
+            delay: 4000,
+            disableOnInteraction: false//不可打断自动轮播
+          },
+          //分页器
+          pagination: {
+            el: '.swiper-pagination'
+          },
+          navigation: {
+            nextEl: '.swiper-button-next',
+            pervEl: '.swiper-button-prev'
+          }
+        })
+      })
+
+    }
+  }
+```
+
+2) 使用 vue-awesome-swiper
+    - 安装vue-awesome-swiper
+      yarn add vue-awesome-swiper@4.1.1
+    - 引入
+   ```js
+
+      import Vue from 'vue'
+      import VueAwesomeSwiper from 'vue-awesome-swiper'
+
+      //import style (>=Swiper 6.x)
+      import 'swiper/swiper-bundle.css'
+      //import style (<=Swiper 5.x)
+      import 'swiper/css/swiper.css'
+      Vue.use(VueAwesomeSwiper)
+   ```
