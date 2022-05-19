@@ -2,9 +2,9 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="currentIndex = -2" @mouseenter="currentIndex = -1">
+      <div @mouseleave="hideFirst()" @mouseenter="showFirst">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
+        <div class="sort" v-show="isShowFirstList">
           <div class="all-sort-list2" @click="toSearch">
             <div class="item" v-for="(c1, index) in CategoryList" :key="c1.categoryId"
               :class="{ active: currentIndex === index }" @mouseenter="showSubList(index)">
@@ -64,11 +64,12 @@ import { throttle } from 'lodash'
 export default {
   name: 'TypeNav',
   data() {
+    const { path } = this.$route
+    const isHome = path === '/'
     return {
-      /* -1 离开了,不显示二级菜单
-         0-n 显示对应索引的二级菜单
-       */
-      currentIndex: -2
+      currentIndex: -2,
+      isShowFirstList: isHome,
+      isHome
     }
   },
   computed: {
@@ -101,7 +102,21 @@ export default {
     showSubList: throttle(function (index) {
       if (this.currentIndex !== -2)
         this.currentIndex = index
-    }, 200)
+    }, 200),
+    showFirst() {
+      //标识当前进入了包含分类的div
+      this.currentIndex = -1
+      //显示一级列表
+      this.isShowFirstList = true
+    },
+    hideFirst() {
+      //标识当前移出了包含分类的div
+      this.currentIndex = -2
+      if (!this.isHome) {
+        //如果不在home页面就不显示一级列表
+        this.isShowFirstList = false
+      }
+    }
   },
 }
 </script>

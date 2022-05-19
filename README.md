@@ -455,3 +455,17 @@ import { throttle } from 'lodash'
   currentIndex=-2 离开div
   currentIndex=-1 没离开div但是不再一级列表中
   currentIndex= 下标 在一级列表上
+
+### 控制一级列表显示与隐藏
+- 在home界面不隐藏,在其它页面默认隐藏,只有移入的时候才显示,移出不显示
+1) 添加标识 isHome 是否为首页 isShowFirstList 是否显示一级列表 默认值为 isHome的值
+   获取路由路径是否 为'/' 如果是则是首页 isHome的值为true isShowFirstList也为true
+   否则为false 不显示
+2) 移入div时,显示一级列表
+   this.isShowFirstList = true
+3) 移出div,隐藏一级列表
+   前提是当前界面不是Home界面
+   if (!this.isHome) {
+        //如果不在home页面就不显示一级列表
+        this.isShowFirstList = false
+      }
