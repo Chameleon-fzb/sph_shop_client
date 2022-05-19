@@ -469,3 +469,21 @@ import { throttle } from 'lodash'
         //如果不在home页面就不显示一级列表
         this.isShowFirstList = false
       }
+### 添加一级列表显示隐藏的过渡效果
+1) 给显示隐藏的元素包裹 <transition name="listSlide"></transition>
+2) 在显示/隐藏过程的类名下指定:transition样式
+3) 在隐藏时的类名下指定:隐藏的样式
+
+```css
+  .listSlide-enter-active,
+    .listSlide-leave-active {
+      transition: all 1s;
+    }
+
+    //指定隐藏时的样式
+    .listSlide-enter,
+    .listSlide-leave-to {
+      opacity: 0;
+      height: 0;
+    }
+```

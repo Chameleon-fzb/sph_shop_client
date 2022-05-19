@@ -4,44 +4,47 @@
     <div class="container">
       <div @mouseleave="hideFirst()" @mouseenter="showFirst">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort" v-show="isShowFirstList">
-          <div class="all-sort-list2" @click="toSearch">
-            <div class="item" v-for="(c1, index) in CategoryList" :key="c1.categoryId"
-              :class="{ active: currentIndex === index }" @mouseenter="showSubList(index)">
-              <h3>
-                <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">
+        <transition name="listSlide">
+          <div class="sort" v-show="isShowFirstList">
+            <div class="all-sort-list2" @click="toSearch">
+              <div class="item" v-for="(c1, index) in CategoryList" :key="c1.categoryId"
+                :class="{ active: currentIndex === index }" @mouseenter="showSubList(index)">
+                <h3>
+                  <!-- <router-link :to="`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`">
                 {{ c1.categoryName }}
               </router-link> -->
-                <!-- <a href="javascript:;"
+                  <!-- <a href="javascript:;"
                 @click="$router.push(`/search?categoryName=${c1.categoryName}&category1Id=${c1.categoryId}`)">{{ c1.categoryName }}</a> -->
-                <a href="javascript:;" :data-categoryName="c1.categoryName"
-                  :data-category1Id="c1.categoryId">{{ c1.categoryName }}</a>
-              </h3>
-              <div class="item-list clearfix">
-                <div class="subitem" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
-                  <dl class="fore">
-                    <dt>
-                      <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">
+                  <a href="javascript:;" :data-categoryName="c1.categoryName"
+                    :data-category1Id="c1.categoryId">{{ c1.categoryName }}</a>
+                </h3>
+                <div class="item-list clearfix">
+                  <div class="subitem" v-for="(c2, index) in c1.categoryChild" :key="c2.categoryId">
+                    <dl class="fore">
+                      <dt>
+                        <!-- <router-link :to="`/search?categoryName=${c2.categoryName}&category2Id=${c2.categoryId}`">
                       {{ c2.categoryName }}
                     </router-link> -->
-                      <a href="javascript:;" :data-categoryName="c2.categoryName"
-                        :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
-                    </dt>
-                    <dd>
-                      <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
-                        <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">
+                        <a href="javascript:;" :data-categoryName="c2.categoryName"
+                          :data-category2Id="c2.categoryId">{{ c2.categoryName }}</a>
+                      </dt>
+                      <dd>
+                        <em v-for="(c3, index) in c2.categoryChild" :key="c3.categoryId">
+                          <!-- <router-link :to="`/search?categoryName=${c3.categoryName}&category3Id=${c3.categoryId}`">
                         {{ c3.categoryName }}
                       </router-link> -->
-                        <a href="javascript:;" :data-categoryName="c3.categoryName"
-                          :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
-                      </em>
-                    </dd>
-                  </dl>
+                          <a href="javascript:;" :data-categoryName="c3.categoryName"
+                            :data-category3Id="c3.categoryId">{{ c3.categoryName }}</a>
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
+
       </div>
       <nav class="nav">
         <a href="###">服装城</a>
@@ -152,6 +155,19 @@ export default {
       }
     }
 
+    //指定过渡的样式
+    .listSlide-enter-active,
+    .listSlide-leave-active {
+      transition: all 1s;
+    }
+
+    //指定隐藏时的样式
+    .listSlide-enter,
+    .listSlide-leave-to {
+      opacity: 0;
+      height: 0;
+    }
+
     .sort {
       position: absolute;
       left: 0;
@@ -161,6 +177,7 @@ export default {
       position: absolute;
       background: #fafafa;
       z-index: 999;
+
 
       .all-sort-list2 {
         .item {
