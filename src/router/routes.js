@@ -23,8 +23,7 @@ export default [
 		path: '/search/:keyword?',
 		component: Search,
 		props: route => ({
-			keyword: route.params.keyword,
-			keyword2: route.query.keyword2
+			keyword: route.params.keyword
 		})
 	}
 ]

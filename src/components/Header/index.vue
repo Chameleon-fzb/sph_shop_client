@@ -63,15 +63,13 @@ export default {
 			// // 对象的写法
 			const location = {
 				name: 'search',
+				query: this.$route.query
 			}
 			const { keyword } = this
 			if (keyword)
 				location.params = {
 					keyword
 				}
-			location.query = {
-				keyword2: keyword
-			}
 			this.$router.push(location)
 		}
 	}

@@ -96,7 +96,8 @@ export default {
         }
         const location = {
           name: 'search',
-          query
+          query,
+          params: this.$route.params
         }
         this.$router.push(location)
       }
