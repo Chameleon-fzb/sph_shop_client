@@ -2,7 +2,7 @@
   <!-- 商品分类导航 -->
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="hideFirst">
+      <div @mouseleave="currentIndex = -2" @mouseenter="currentIndex = -1">
         <h2 class="all">全部商品分类</h2>
         <div class="sort">
           <div class="all-sort-list2" @click="toSearch">
@@ -68,7 +68,7 @@ export default {
       /* -1 离开了,不显示二级菜单
          0-n 显示对应索引的二级菜单
        */
-      currentIndex: -1
+      currentIndex: -2
     }
   },
   computed: {
@@ -99,11 +99,9 @@ export default {
 
     },
     showSubList: throttle(function (index) {
-      this.currentIndex = index
-    }, 200),
-    hideFirst() {
-      this.currentIndex = -1
-    }
+      if (this.currentIndex !== -2)
+        this.currentIndex = index
+    }, 200)
   },
 }
 </script>

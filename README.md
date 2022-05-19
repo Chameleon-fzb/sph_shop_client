@@ -442,12 +442,15 @@ import _  from 'lodash'
 import { throttle } from 'lodash'
 ```
 
-### 三级列表显示bug
+### 解决三级列表显示bug
 快速移出分类项,最后一次事件延迟处理,导致二级列表显示
+原因: 在进入第一个分类项后0.2s才回去执行改变currentIndex的值
+      但在0.2s,已经移出了整个div,这时currentIndex改变了,就会还显示二级分类
 
 1) 解决方法 使用{trailing=false}
-   但是在分类项里移动的时候,分类项会显示在上一次位置
    由于最后一次事件没有延迟处理
+   但是在分类项里快速移动到另一个分类不动的时候的,分类项会显示在上一次位置
+   
 2) 使用标识
   currentIndex=-2 离开div
   currentIndex=-1 没离开div但是不再一级列表中
