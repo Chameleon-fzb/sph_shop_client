@@ -5,6 +5,8 @@ import router from './router'
 import store from './store'
 import TypeNav from '@/components/TypeNav'
 
+import './mock/mockServer'
+
 import './plugins/swiper'
 
 //不显示非生产环境打包的提示

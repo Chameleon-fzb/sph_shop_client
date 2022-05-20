@@ -10,15 +10,16 @@
     <!-- 猜你喜欢 -->
     <Like />
     <!--楼层-->
-    <Floor />
+    <Floor v-for="floor in floors " :key="floor.id" :floor=floor></Floor>
     <!--楼层-->
-    <Floor />
+    <!-- <Floor /> -->
     <!--商标-->
     <Brand />
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Brand from './Brand'
 import Floor from './Floor'
 import Like from './Like'
@@ -35,11 +36,17 @@ export default {
     Rank,
     TodayRecommend,
   },
+  computed: {
+    ...mapState({
+      floors: state => state.home.floors
+    })
+  },
   mounted() {
     this.$store.dispatch('getBanner')
+    this.$store.dispatch('getRecommends')
+    this.$store.dispatch('getFloors')
+    this.$store.dispatch('getLikes')
+    this.$store.dispatch('getRanks')
   }
 }
 </script>
-
-<style lang="less" scoped>
-</style>

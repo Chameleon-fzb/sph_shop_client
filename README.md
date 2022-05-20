@@ -594,3 +594,59 @@ mounted() {
       import 'swiper/css/swiper.css'
       Vue.use(VueAwesomeSwiper)
    ```
+   ```html
+     <swiper :options="swiperOptions">
+          <swiper-slide class="swiper-slide" v-for="banner in bannerList" :key="banner.id">
+            <img :src="banner.imageUrl" />
+          </swiper-slide>
+          <div class="swiper-pagination" slot="pagination"></div>
+          <div class="swiper-button-prev" slot="button-prev"></div>
+          <div class="swiper-button-next" slot="button-next"></div>
+      </swiper>
+    ```
+
+    ``` js
+    data() {
+    return {
+      swiperOptions: {
+        loop: true, // 循环模式选项
+        autoplay: {
+          //自动轮播
+          delay: 4000,
+          disableOnInteraction: false //用户操作后不打断自动轮播
+        },
+        // 如果需要分页器
+        pagination: {
+          el: '.swiper-pagination'
+        },
+        // 如果需要前进后退按钮
+        navigation: {
+          nextEl: '.swiper-button-next',
+          prevEl: '.swiper-button-prev'
+        }
+
+        // 如果需要滚动条
+        // scrollbar: {
+        // 	el: '.swiper-scrollbar'
+        // }
+      }
+    }
+  }
+  ```
+
+  ## mock 首页的数据
+  1) 安装mockjs
+     yarn add mockjs
+  2) 引入mock
+  ```js
+     import recommends from './recommends.json'//引入定义返回的数据
+     import Mock from 'mockjs'
+     Mock.mock('/mock/recommends', {
+	   code: 200,
+	   data: recommends
+     })
+  ```
+  main.js
+  ```js
+  import './mock/mockServer'
+  ```

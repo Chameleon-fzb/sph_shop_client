@@ -1,0 +1,89 @@
+[
+  {
+    "text": "热卖排行",
+    "rankList": [
+      {
+        "id": "001",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 8 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "002",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 8 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "003",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 8 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "004",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 8 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      }
+    ]
+  },
+  {
+    "text": "特价排行",
+    "rankList": [
+      {
+        "id": "001",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 11 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "002",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 11 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "003",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 11 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "004",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 11 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      }
+    ]
+  },
+  {
+    "text": "新品排行",
+    "rankList": [
+      {
+        "id": "001",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 12 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "002",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 12 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "003",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 12 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      },
+      {
+        "id": "004",
+        "imageUrl": "/images/1.jpg",
+        "title": "【官网价直降1100】Apple iPhone 12 Plus 256GB 银色移动联通电信4G手机",
+        "price": "¥100.00"
+      }
+    ]
+  }
+]

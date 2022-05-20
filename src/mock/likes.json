@@ -1,0 +1,41 @@
+{
+  "title": "猜你喜欢",
+  "likeList": [
+    {
+      "id": "001",
+      "text": "阳光美包新款单肩包女包时尚子母包四件套女",
+      "price": "¥116.00",
+      "imageUrl": "/images/like_01.png"
+    },
+    {
+      "id": "002",
+      "text": "苏泊尔易洁不粘炒锅煎锅32cm电磁炉通用炒菜锅",
+      "price": "¥136.00",
+      "imageUrl": "/images/like_02.png"
+    },
+    {
+      "id": "003",
+      "text": "JBL真无线蓝牙耳机防水防汗音乐运动跑步耳机通话",
+      "price": "¥116.00",
+      "imageUrl": "/images/like_03.png"
+    },
+    {
+      "id": "004",
+      "text": "阳光美包新款单肩包女包时尚子母包四件套女",
+      "price": "¥116.00",
+      "imageUrl": "/images/like_01.png"
+    },
+    {
+      "id": "005",
+      "text": "苏泊尔易洁不粘炒锅煎锅32cm电磁炉通用炒菜锅",
+      "price": "¥136.00",
+      "imageUrl": "/images/like_02.png"
+    },
+    {
+      "id": "006",
+      "text": "JBL真无线蓝牙耳机防水防汗音乐运动跑步耳机通话",
+      "price": "¥116.00",
+      "imageUrl": "/images/like_03.png"
+    }
+  ]
+}
