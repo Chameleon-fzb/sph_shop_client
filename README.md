@@ -650,3 +650,62 @@ mounted() {
   ```js
   import './mock/mockServer'
   ```
+## 搜索界面
+### 根据 分类和关键字同时搜索
+1) 把数据获取放在created中,搜索条件改变的时候,不会再次获取
+   - 因为 Search组件只创建了一次,生命周期函数只执行一次
+2) 使用 watch 监视参数的改变 ($route)
+   ```js
+   /** 获取数据*/
+        getSearchList(page = 1) {
+            this.searchParams.pageNo = page
+            this.$store.dispatch('getSearchList', this.searchParams)
+        },
+
+
+    watch: {
+      $route: {
+        handler() {
+          this.updSearchParams()
+          this.getSearchList()
+        },
+        immediate: true //初始化执行一次
+      }
+    }
+   ```
+
+### 解决删除关键字和列表关键字,路径没变化的bug
+    - 原因是直接获取数据只是搜索的路径变了,路由信息没有变化
+  ```js
+  removeKeyword() {
+            this.searchParams.keyword = ''
+            this.getSearchList()
+        },
+  removeCategoryName() {
+            this.searchParams.categoryName = ''
+            this.searchParams.category1Id = ''
+            this.searchParams.category2Id = ''
+            this.searchParams.category3Id = ''
+            this.getSearchList()
+
+        } 
+  ```
+1) 解决
+   改变路由信息,重新跳转路由
+   ```js
+   removeKeyword() {
+            const location = {
+                name: 'search',
+                query: this.$route.query
+            }
+            this.$router.push(location)
+            // this.getSearchList()
+        },
+        removeCategoryName() {
+            const location = {
+                name: 'search',
+                params: { keyword: this.$route.params.keyword }
+            }
+            this.$router.push(location)
+        } 
+  ```
