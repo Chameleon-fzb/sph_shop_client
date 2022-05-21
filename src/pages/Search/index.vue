@@ -150,7 +150,7 @@ export default {
                 categoryName: '', // 分类名称
                 keyword: '', // 搜索关键字
                 props: [], // ["属性ID:属性值:属性名"]示例: ["2:6.0～6.24英寸:屏幕尺寸"]
-                // trademark: '', // 品牌: "ID:品牌名称"示例: "1:苹果"
+                //trademark: '', // 品牌: "ID:品牌名称"示例: "1:苹果"
                 order: '1:desc', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
                 pageNo: 1, // 页码
                 pageSize: 10 // 每页数量
@@ -210,12 +210,14 @@ export default {
         /* 设置品牌搜索 */
         setTrademark(trademark) {
             if (this.searchParams.trademark === trademark) return
-            this.searchParams.trademark = trademark
+            this.$set(this.searchParams, 'trademark', trademark)
+            // this.searchParams.trademark = trademark
             this.getSearchList()
         },
         /*删除品牌  */
         removeTrademark() {
-            this.searchParams.trademark = ''
+            this.$delete(this.searchParams, 'trademark')
+            // this.searchParams.trademark = ''
             this.getSearchList()
         },
         // 设置品牌属性

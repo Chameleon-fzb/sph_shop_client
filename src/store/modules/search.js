@@ -7,6 +7,15 @@ const state = {
 const actions = {
 	/** ? 获取搜索列表  */
 	async getSearchList({ commit }, searchParams) {
+		searchParams = { ...searchParams }
+		Object.keys(searchParams).forEach(key => {
+			if (
+				searchParams[key] === '' ||
+				(Array.isArray(searchParams[key]) && searchParams[key].length === 0)
+			) {
+				delete searchParams[key]
+			}
+		})
 		const result = await reqSearch(searchParams)
 		if (result.code === 200) {
 			commit('RECEIVE_SEARCH_RESULT', result.data)

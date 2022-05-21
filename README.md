@@ -773,3 +773,61 @@ orderType:'desc' 排序方式
             this.getSearchList()
         }
 ```
+
+### 优化搜索页面请求参数
+减少参数中为的空或者为空数组
+props: []
+trademark:''
+在请求发起的时候删除空串和空数组
+```js
+	Object.keys(searchParams).forEach(key => {
+			if (
+				searchParams[key] === '' ||
+				(Array.isArray(searchParams[key]) && searchParams[key].length === 0)
+			) {
+				delete searchParams[key]
+			}
+		})
+```
+发现searchParams里的数组被删除
+因为props:[]是数组,保存引用的关系,删除了参数也会删除原来searchParams
+可以用浅拷贝解决
+```js
+searchParams = {...searchParams}
+	Object.keys(searchParams).forEach(key => {
+			if (
+				searchParams[key] === '' ||
+				(Array.isArray(searchParams[key]) && searchParams[key].length === 0)
+			) {
+				delete searchParams[key]
+			}
+		})
+```
+当数组中还有嵌套对象 就要用深拷贝
+
+
+### 响应式数据对象:添加新的属性和删除属性
+响应式数据:data和state中的数据都是响应式数据
+响应式数据对象:是值为对象的响应式数据,响应式对象内部的所有层次数据都是响应式:searchParams/goodsList
+
+向响应式对象中添加新的属性
+searchParams.xxx = 'zzz'
+这种方式添加的数据不是响应式的 界面不会更新
+Vue.set(target,propName,value)/this.$set(target,propName,value)
+删除响应式数据
+Vue.delete(target,propName)/this.$delete(target,propName)
+```js
+ /* 设置品牌搜索 */
+        setTrademark(trademark) {
+            if (this.searchParams.trademark === trademark) return
+            this.$set(this.searchParams, 'trademark', trademark)
+            // this.searchParams.trademark = trademark
+            this.getSearchList()
+        },
+        /*删除品牌  */
+        removeTrademark() {
+            this.$delete(this.searchParams, 'trademark')
+            // this.searchParams.trademark = ''
+            this.getSearchList()
+        },
+```
