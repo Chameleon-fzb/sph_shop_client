@@ -741,3 +741,9 @@ mounted() {
 		this.$bus.$off('clearKeyword')
 	},
   ```
+### 解决在search页面搜索多次后无法一次退回home界面的问题
+在header组件跳转路由的方法中添加
+	```js
+  (this.$route.name === '/search') ? this.$router.replace(location) : this.$router.push(location)
+  ```
+判断当前路由是否为search,是的话用replace方法跳转路由

@@ -166,7 +166,7 @@ export default {
                 query: this.$route.query
             }
             this.$bus.$emit('clearKeyword')
-            this.$router.push(location)
+            this.$router.replace(location)
 
             // this.getSearchList()
         },
@@ -176,7 +176,7 @@ export default {
                 name: 'search',
                 params: { keyword: this.$route.params.keyword }
             }
-            this.$router.push(location)
+            this.$router.replace(location)
         },
     },
     // created() {

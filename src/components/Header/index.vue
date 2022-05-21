@@ -70,7 +70,7 @@ export default {
 				location.params = {
 					keyword
 				}
-			this.$router.push(location)
+					(this.$route.name === '/search') ? this.$router.replace(location) : this.$router.push(location)
 		}
 	},
 	mounted() {
