@@ -747,3 +747,29 @@ mounted() {
   (this.$route.name === '/search') ? this.$router.replace(location) : this.$router.push(location)
   ```
 判断当前路由是否为search,是的话用replace方法跳转路由
+
+### 根据品牌进行搜索
+点击品牌=>更新searchParams中的trademark为指定的值==>发送请求
+### 根据属性进行搜索
+点击属性=>更新searchParams中的props为指定的值==>发送请求
+
+### 设置搜索的排序项
+order: '1:desc', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
+orderFlag:'1' 排序根据的条件
+orderType:'desc' 排序方式
+点击指定的排序项,切换排序方式,默认为降序,点击当前排序项切换升序和降序
+```js
+     setOrder(orderFlag) {
+            let [flag, type] = this.orders
+            if (flag === orderFlag) {
+                // 如果点击的是当前项  type 修 改
+                type = type === 'desc' ? 'asc' : 'desc'
+            } else {
+                // 如果点击的不是当前项 更新 flag 和 type 默认为 desc
+                flag = orderFlag
+                type = 'desc'
+            }
+            this.searchParams.order = flag + ':' + type
+            this.getSearchList()
+        }
+```

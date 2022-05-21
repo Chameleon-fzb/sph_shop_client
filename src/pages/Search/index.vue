@@ -15,33 +15,59 @@
                                 @click="removeKeyword">×</i></li>
                         <li class="with-x" v-if="searchParams.categoryName">{{ searchParams.categoryName }}<i
                                 @click="removeCategoryName">×</i></li>
+                        <li class="with-x" v-if="searchParams.trademark">
+                            {{ searchParams.trademark }}
+                            <i @click="removeTrademark">×</i>
+                        </li>
+                        <li class="with-x" v-for="(prop, index) in searchParams.props" :key="prop">
+                            {{ prop }}
+                            <i @click="removeProp(index)">×</i>
+                        </li>
                     </ul>
                 </div>
                 <!--selector-->
-                <SearchSelector />
+                <SearchSelector :setTrademark="setTrademark" @setProp='setProp' />
                 <!--details-->
                 <div class="details clearfix">
                     <div class="sui-navbar">
                         <div class="navbar-inner filter">
                             <ul class="sui-nav">
-                                <li class="active">
-                                    <a href="#">综合</a>
+                                <li :class="{ active: orders[0] === '1' }">
+                                    <a href="javascript:" @click="setOrder('1')">
+                                        综合
+                                        <i v-if="orders[0] === '1'" class="iconfont"
+                                            :class="orders[1] === 'desc' ? 'icon-down' : 'icon-up'"></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">销量</a>
+                                <li :class="{ active: orders[0] === '2' }">
+                                    <a href="javascript:" @click="setOrder('2')">
+                                        价格
+                                        <i v-if="orders[0] === '2'" class="iconfont"
+                                            :class="orders[1] === 'desc' ? 'icon-down' : 'icon-up'"></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">新品</a>
+                                <li :class="{ active: orders[0] === '3' }">
+                                    <a href="javascript:" @click="setOrder('3')">
+                                        销量
+                                        <i v-if="orders[0] === '3'" class="iconfont"
+                                            :class="orders[1] === 'desc' ? 'icon-down' : 'icon-up'"></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">评价</a>
+                                <li :class="{ active: orders[0] === '5' }">
+                                    <a href="javascript:" @click="setOrder('5')">
+                                        新品
+                                        <i v-if="orders[0] === '5'" class="iconfont"
+                                            :class="orders[1] === 'desc' ? 'icon-down' : 'icon-up'"></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">价格⬆</a>
+                                <li :class="{ active: orders[0] === '4' }">
+                                    <a href="javascript:" @click="setOrder('4')">
+                                        评价
+                                        <i v-if="orders[0] === '4'" class="iconfont"
+                                            :class="orders[1] === 'desc' ? 'icon-down' : 'icon-up'"></i>
+                                    </a>
                                 </li>
-                                <li>
-                                    <a href="#">价格⬇</a>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -128,11 +154,14 @@ export default {
                 order: '1:desc', // 排序方式 1: 综合,2: 价格 asc: 升序,desc: 降序 示例: "1:desc"
                 pageNo: 1, // 页码
                 pageSize: 10 // 每页数量
-            }
+            },
         }
     },
     computed: {
-        ...mapGetters(['goodsList'])
+        ...mapGetters(['goodsList']),
+        orders() {
+            return this.searchParams.order.split(':')
+        }
     }
     ,
     methods: {
@@ -178,6 +207,43 @@ export default {
             }
             this.$router.replace(location)
         },
+        /* 设置品牌搜索 */
+        setTrademark(trademark) {
+            if (this.searchParams.trademark === trademark) return
+            this.searchParams.trademark = trademark
+            this.getSearchList()
+        },
+        /*删除品牌  */
+        removeTrademark() {
+            this.searchParams.trademark = ''
+            this.getSearchList()
+        },
+        // 设置品牌属性
+        setProp(prop) {
+            const { props } = this.searchParams
+            if (props.includes(prop)) return
+            this.searchParams.props.push(prop)
+            this.getSearchList()
+        },
+        //删除属性
+        removeProp(index) {
+            this.searchParams.props.splice(index, 1)
+            this.getSearchList()
+        },
+        // 设置排序项及方式
+        setOrder(orderFlag) {
+            let [flag, type] = this.orders
+            if (flag === orderFlag) {
+                // 如果点击的是当前项  type 修 改
+                type = type === 'desc' ? 'asc' : 'desc'
+            } else {
+                // 如果点击的不是当前项 更新 flag 和 type 默认为 desc
+                flag = orderFlag
+                type = 'desc'
+            }
+            this.searchParams.order = flag + ':' + type
+            this.getSearchList()
+        }
     },
     // created() {
     //     this.updSearchParams()
@@ -295,7 +361,6 @@ export default {
 
                         li {
                             float: left;
-                            line-height: 18px;
 
                             a {
                                 display: block;
@@ -303,6 +368,11 @@ export default {
                                 padding: 11px 15px;
                                 color: #777;
                                 text-decoration: none;
+
+                                .iconfont.icon-up,
+                                .iconfont.icon-down {
+                                    font-size: 10px;
+                                }
                             }
 
                             &.active {
