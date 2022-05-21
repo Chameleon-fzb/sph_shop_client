@@ -165,7 +165,9 @@ export default {
                 name: 'search',
                 query: this.$route.query
             }
+            this.$bus.$emit('clearKeyword')
             this.$router.push(location)
+
             // this.getSearchList()
         },
         /*删除列表搜索项 */
@@ -175,7 +177,7 @@ export default {
                 params: { keyword: this.$route.params.keyword }
             }
             this.$router.push(location)
-        }
+        },
     },
     // created() {
     //     this.updSearchParams()

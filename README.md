@@ -709,3 +709,35 @@ mounted() {
             this.$router.push(location)
         } 
   ```
+  ### 解决删除关键字,搜索文本框内容没删除 bug
+  1) 使用事件总线进行事件触发,删除keyword的时候清除keyword
+   安装事件总线
+   ```js
+  new Vue({
+	  beforeCreate() {
+		  Vue.prototype.$bus = this
+	  },
+	  render: h => h(App),
+  	el: '#app',
+  	router, //注册路由器 ==> 所有的组件都可以直接访问2个对象:$router 和 $route
+  	store
+})
+```
+ 2)在header组件中定义事件,及绑定监听
+ ```js
+	mounted() {
+		this.$bus.$on('clearKeyword',()=>{
+      this.keyword = ''
+    })
+	},
+  ```
+  3) 在search组件删除keyword的时候触发事件
+  ```js
+    this.$bus.$emit('clearKeyword')
+  ```
+  4) 注意要在组件销毁前解绑事件
+  ```js
+  	beforeDestroy() {
+		this.$bus.$off('clearKeyword')
+	},
+  ```

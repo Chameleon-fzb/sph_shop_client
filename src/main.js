@@ -15,6 +15,9 @@ Vue.config.productionTip = false
 Vue.component(TypeNav.name, TypeNav)
 
 new Vue({
+	beforeCreate() {
+		Vue.prototype.$bus = this
+	},
 	render: h => h(App),
 	el: '#app',
 	router, //注册路由器 ==> 所有的组件都可以直接访问2个对象:$router 和 $route
