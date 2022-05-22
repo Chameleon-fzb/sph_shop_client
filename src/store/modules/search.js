@@ -32,7 +32,8 @@ const mutations = {
 const getters = {
 	goodsList: state => state.searchResult.goodsList || [],
 	trademarkList: state => state.searchResult.trademarkList || [],
-	attrsList: state => state.searchResult.attrsList || []
+	attrsList: state => state.searchResult.attrsList || [],
+	total: state => state.searchResult.total || 0
 }
 export default {
 	state,

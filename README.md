@@ -831,3 +831,56 @@ Vue.delete(target,propName)/this.$delete(target,propName)
             this.getSearchList()
         },
 ```
+
+### 自定义分页组件
+1) 设计
+    [上一页] (1) (...) [连续页码] (...) (末页) [下一页] 总页数
+    
+    props
+      - currentPage 当前页
+      - total 总数量
+      - pageSize 每页显示数量
+      - showPageNo 连续页码数(必须为单数>3) validator
+  总页数 totalPages:Math.ceil( total/pagesize)
+  连续页码 开始 和 结束
+  {start,end} : 
+  // start = currentPage - Math.floor(showPageNo/2)
+  start = currentPage - (showPageNo-1)/2
+  start = start<1 ? 1:start
+  end= start+showPageNo-1
+  if(end>totalPages){
+    end=totalPages
+    start = end-showPageNo+1
+    start = start<1 ? 1:start
+  }
+ currentChange :当前页码改变执行的回调
+ ```vue
+ <Pagination 
+ :currentPage="searchParams.pageNo" 
+ :total="total" 
+ :pageSize="searchParams.pageSize"
+ :showPageNo="3" 
+ @currentChange="getSearchList" 
+ />
+ ```
+### 设计高复用的组件
+模板与样式===> 静态组件
+设计props: 接收的数据
+ - currentPage 传进来当前页
+ - total 总数量
+ - pageSize 每页显示数量
+ - showPageNo 连续页码数(必须为单数>3) validator验证
+设计data:组件内部的数据
+ - myCurrentPage 组件内部的当前页
+设计computed:基于props和data计算得到的属性
+ - startEnd:{start,end} 连续页码开始和结束
+ - startEndArr:[start,start+1,...,end] 连续页码数组
+
+
+v-for和v-if优先级
+- v-for优先级高:解析v-for遍历产生多个标签,接着每个标签解析v-if
+- v-for与v-if同时使用
+- 问题:效率低,多执行了一些判断
+- 解决:
+- 如果v-if判断是根据数组每一项来判断=> 定义计算属性(过滤)
+- 如果根据其它数据判断,可以再包一层标签,进行v-if,只执行一次

@@ -4,6 +4,7 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import TypeNav from '@/components/TypeNav'
+import Pagination from '@/components/Pagination'
 
 import './mock/mockServer'
 
@@ -13,6 +14,7 @@ import './plugins/swiper'
 Vue.config.productionTip = false
 //全局注册组件
 Vue.component(TypeNav.name, TypeNav)
+Vue.component(Pagination.name, Pagination)
 
 new Vue({
 	beforeCreate() {
