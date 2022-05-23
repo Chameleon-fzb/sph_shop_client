@@ -854,7 +854,7 @@ Vue.delete(target,propName)/this.$delete(target,propName)
     start = start<1 ? 1:start
   }
  currentChange :当前页码改变执行的回调
- ```vue
+ ```html
  <Pagination 
  :currentPage="searchParams.pageNo" 
  :total="total" 
@@ -884,3 +884,60 @@ v-for和v-if优先级
 - 解决:
 - 如果v-if判断是根据数组每一项来判断=> 定义计算属性(过滤)
 - 如果根据其它数据判断,可以再包一层标签,进行v-if,只执行一次
+  
+## 详情界面
+### 放大镜组件的实现
+```html
+<template>
+  <div class="spec-preview">
+    <img :src="currentImg.imgUrl" />
+    <div class="event" @mousemove="handler"></div>
+    <div class="big">
+      <img :src="currentImg.imgUrl" ref="bigImg" />
+    </div>
+    <div class="mask" ref="mask"></div>
+  </div>
+</template>
+```
+遮罩层mask为图片的两倍 右边大图显示的是原图的1/4 ,放大了4倍
+
+处理遮罩移动的方法
+```js
+handler(e) {
+      // offsetHeight = 内容高度 + padding + border
+      // clientHeight = 内容高度 + padding
+      // scrollHeight = 实际内容高度 + padding
+      let { mask, bigImg } = this.$refs
+      // 遮罩的大小
+      let [maskWidth, maskHeight] = [mask.offsetWidth, mask.offsetHeight]
+      // 获取鼠标的位置
+      let [mouseX, mouseY] = [e.offsetX, e.offsetY]
+      let [left, top] = [mouseX - maskWidth / 2, mouseY - maskHeight / 2]
+      // 限制不超过边框
+      left < 0 && (left = 0)
+      left > maskWidth && (left = maskWidth)
+
+      top < 0 && (top = 0)
+      top > maskHeight && (top = maskHeight)
+      // 改变遮罩的位置
+      mask.style.left = left + 'px'
+      mask.style.top = top + 'px'
+      // 改变放大镜图片位置
+      bigImg.style.left = -2 * left + 'px'
+      bigImg.style.top = -2 * top + 'px'
+    }
+```
+
+### clientX screenX,offsetX
+clientX: 当鼠标事件发生时(不管是onclick, 还是onmousemove, onmouseover等), 鼠标相对于浏览器(这里说的是浏览器的有效区域)x轴的位置
+clientY: 当鼠标事件发生时, 鼠标相对于浏览器(这里说的是浏览器的有效区域)y轴的位置
+screenX: 当鼠标事件发生时, 鼠标相对于显示器屏幕x轴的位置
+screenY: 当鼠标事件发生时, 鼠标相对于显示器屏幕y轴的位置
+offsetX: 当鼠标事件发生时, 鼠标相对于事件源x轴的位置
+offsetY: 当鼠标事件发生时, 鼠标相对于事件源y轴的位置
+
+### offsetWidth clientWidth scrollWidth
+offsetWidth = 
+offsetHeight = 内容高度 + padding + border
+clientHeight = 内容高度 + padding
+scrollHeight = 实际内容高度 + padding

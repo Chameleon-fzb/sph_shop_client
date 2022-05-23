@@ -1,3 +1,4 @@
+import { get } from 'lodash'
 import ajax from './ajax'
 import mockAjax from './mockAjax'
 
@@ -32,3 +33,9 @@ export const reqLikes = () => mockAjax('/likes')
  * ? 搜索分页
  **/
 export const reqSearch = searchParams => ajax.post('/list', searchParams)
+
+/**
+ * ? 请求商品详情
+ */
+export const reqDetailInfo = skuId =>
+	ajax({ url: `/item/${skuId}`, method: 'GET' })
