@@ -39,3 +39,9 @@ export const reqSearch = searchParams => ajax.post('/list', searchParams)
  */
 export const reqDetailInfo = skuId =>
 	ajax({ url: `/item/${skuId}`, method: 'GET' })
+
+/**
+ *? 添加到购物车或更新购物车数量
+ */
+export const addOrUpdCart = (skuId, skuNum) =>
+	ajax({ url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'POST' })

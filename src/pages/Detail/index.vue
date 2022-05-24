@@ -81,7 +81,7 @@
                 <a href="javascript:" class="mins" @click="changeSkuNum(-1)">-</a>
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addToCart">加入购物车</a>
               </div>
             </div>
           </div>
@@ -379,6 +379,18 @@ export default {
         item.isChecked = '0'
       })
       currentAttrValue.isChecked = '1'
+    },
+    //加入购物车
+    addToCart() {
+      const { skuId, skuNum } = this
+      try {
+        this.$store.dispatch('addOrUpdCart', { skuId, skuNum })
+        sessionStorage.setItem('SKU_INFO_KEY', JSON.stringify(this.skuInfo))
+        this.$router.push('/addCartSuccess?skuNum=' + skuNum)
+        alert('添加购物车成功')
+      } catch (error) {
+        alert('加入购物车失败:', error.message)
+      }
     }
   },
   mounted() {

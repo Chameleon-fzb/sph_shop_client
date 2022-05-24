@@ -954,3 +954,10 @@ export default new VueRouter({
 	}
 })
 ```
+## 加到购物车
+
+需要数据 skuId skuNum
+加入成功跳转到加入成功界面
+需要展示商品信息 和 加入数量
+简单数据,可以选择路由传参
+复杂数据,考虑 localStorage,sessionStorage
