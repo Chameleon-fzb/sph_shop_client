@@ -45,3 +45,20 @@ export const reqDetailInfo = skuId =>
  */
 export const addOrUpdCart = (skuId, skuNum) =>
 	ajax({ url: `/cart/addToCart/${skuId}/${skuNum}`, method: 'POST' })
+
+/**
+ * ? 获取购物车列表
+ *
+ */
+export const reqShopCartList = () => ajax('/cart/cartList')
+
+/**
+ * ? 修改是否选中
+ */
+export const reqUpdCartIsCheck = (skuId, isChecked) =>
+	ajax({ url: `/cart/checkCart/${skuId}/${isChecked}`, method: 'GET' })
+/**
+ * ? 删除购物车商品
+ */
+export const reqDelCart = skuId =>
+	ajax({ url: `/cart/deleteCart/${skuId}`, method: 'DELETE' })

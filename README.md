@@ -961,3 +961,27 @@ export default new VueRouter({
 需要展示商品信息 和 加入数量
 简单数据,可以选择路由传参
 复杂数据,考虑 localStorage,sessionStorage
+
+## 购物车页面获取购物车了列表
+
+需要用户标识
+使用 uuid 库 产生临时的唯一标识
+创建工具函数 getUserTempId
+ 1) 先从localStorage 获取
+ 2) 没有在调用uuid 创建新的存储到localStorage
+
+ ```js
+import { v4 as uuidv4 } from 'uuid'
+function getUserTempId() {
+	let userTempId = localStorage.getItem('USER_TEMP_ID_KEY')
+	if (!userTempId) {
+		userTempId = uuidv4()
+		localStorage.setItem('USER_TEMP_ID_KEY', userTempId)
+	}
+	return userTempId
+}
+```
+3) store.user设置userTempId:getUserTempId
+  
+4) 在每一次发请求时携带唯一标识
+   - 在请求拦截器中为config加上临时标识 config.headers.userTempId = userTempId 

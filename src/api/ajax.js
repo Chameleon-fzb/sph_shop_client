@@ -1,6 +1,7 @@
 import axios from 'axios'
 import nprogress from 'nprogress'
 import 'nprogress/nprogress.css'
+import store from '@/store'
 /*
 axios二次封装 
  */
@@ -11,6 +12,10 @@ const service = axios.create({
 
 service.interceptors.request.use(config => {
 	nprogress.start()
+	let userTempId = store.state.user.userTempId
+	if (userTempId) {
+		config.headers.userTempId = userTempId
+	}
 	return config
 })
 

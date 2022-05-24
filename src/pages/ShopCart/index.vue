@@ -1,6 +1,6 @@
 <template>
   <div class="cart">
-    <h4>全部商品</h4>
+    <h4>我的购物车</h4>
     <div class="cart-main">
       <div class="cart-th">
         <div class="cart-th1">全部</div>
@@ -11,113 +11,68 @@
         <div class="cart-th6">操作</div>
       </div>
       <div class="cart-body">
-        <ul class="cart-list">
+        <ul class="cart-list" v-for="cartItem in cartInfoList" :key="cartItem.id">
           <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list">
+            <input type="checkbox" name="chk_list" :checked="cartItem.isChecked"
+              @click="changeIsChecked($event, cartItem)" />
           </li>
           <li class="cart-list-con2">
-            <img src="./images/goods1.png">
-            <div class="item-msg">米家（MIJIA） 小米小白智能摄像机增强版 1080p高清360度全景拍摄AI增强</div>
-          </li>
-          <li class="cart-list-con3">
-            <div class="item-txt">语音升级款</div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">399.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">399</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br>
-            <a href="#none">移到收藏</a>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="">
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods2.png">
-            <div class="item-msg">华为（MIJIA） 华为metaPRO 30 浴霸4摄像 超清晰</div>
-          </li>
-          <li class="cart-list-con3">
-            <div class="item-txt">黑色版本</div>
+            <img :src="cartItem.imgUrl" />
+            <div class="item-msg">
+              {{ cartItem.skuName.substring(0, 62) + '...' }}
+            </div>
           </li>
           <li class="cart-list-con4">
-            <span class="price">5622.00</span>
+            <span class="price">{{ cartItem.skuPrice }}</span>
           </li>
           <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
+            <a href="javascript:;" class="mins" @click="changeCartNum($event, cartItem, -1, true)">
+              -
+            </a>
+            <input autocomplete="off" type="text" minnum="1" class="itxt" :value='cartItem.skuNum' @change="
+              changeCartNum($event, cartItem, $event.target.value * 1, false)
+            " />
+            <a href="javascript:;" class="plus" @click="changeCartNum($event, cartItem, 1, true)">
+              +
+            </a>
           </li>
           <li class="cart-list-con6">
-            <span class="sum">5622</span>
+            <span class="sum">
+              {{ cartItem.skuPrice * cartItem.skuNum }}
+            </span>
           </li>
           <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br>
-            <a href="#none">移到收藏</a>
-          </li>
-        </ul>
-
-        <ul class="cart-list">
-          <li class="cart-list-con1">
-            <input type="checkbox" name="chk_list" id="" value="">
-          </li>
-          <li class="cart-list-con2">
-            <img src="./images/goods3.png">
-            <div class="item-msg">iphone 11 max PRO 苹果四摄 超清晰 超费电 超及好用</div>
-          </li>
-          <li class="cart-list-con3">
-            <div class="item-txt">墨绿色</div>
-          </li>
-          <li class="cart-list-con4">
-            <span class="price">11399.00</span>
-          </li>
-          <li class="cart-list-con5">
-            <a href="javascript:void(0)" class="mins">-</a>
-            <input autocomplete="off" type="text" value="1" minnum="1" class="itxt">
-            <a href="javascript:void(0)" class="plus">+</a>
-          </li>
-          <li class="cart-list-con6">
-            <span class="sum">11399</span>
-          </li>
-          <li class="cart-list-con7">
-            <a href="#none" class="sindelet">删除</a>
-            <br>
-            <a href="#none">移到收藏</a>
+            <a href="javascript:;" class="sindelet" @click="delShopCart(cartItem.skuId)">
+              删除
+            </a>
+            <br />
+            <a href="javascript:;">移到收藏</a>
           </li>
         </ul>
       </div>
     </div>
     <div class="cart-tool">
       <div class="select-all">
-        <input class="chooseAll" type="checkbox">
+        <input class="chooseAll" type="checkbox" v-model='isAllChecked' />
         <span>全选</span>
       </div>
       <div class="option">
-        <a href="#none">删除选中的商品</a>
+        <a href="javascript:;" @click="delCheckShopCart">删除选中的商品</a>
         <a href="#none">移到我的关注</a>
         <a href="#none">清除下柜商品</a>
       </div>
       <div class="money-box">
-        <div class="chosed">已选择
-          <span>0</span>件商品</div>
+        <div class="chosed">
+          已选择
+          <span>{{ isCheckedNum }}</span>
+          件商品
+        </div>
         <div class="sumprice">
           <em>总价（不含运费） ：</em>
-          <i class="summoney">0</i>
+          <i class="summoney">{{ totalPrice }}</i>
         </div>
         <div class="sumbtn">
-          <a class="sum-btn" href="###" target="_blank">结算</a>
+          <router-link class="sum-btn" to="/trade">结算</router-link>
         </div>
       </div>
     </div>
@@ -125,226 +80,354 @@
 </template>
 
 <script>
-  export default {
-    name: 'ShopCart',
-  }
+import { mapGetters } from 'vuex'
+
+export default {
+  name: 'ShopCart',
+  created() {
+    this.getCartList()
+  },
+  computed: {
+    ...mapGetters(['cartInfoList']),
+    //是否全部选中
+    isAllChecked: {
+      get() { return this.cartInfoList.every(item => item.isChecked === 1) && this.cartInfoList.length > 0 },
+      async set(newValue) {
+        try {
+          await this.$store.dispatch('updAllCartCheck', newValue ? 1 : 0)
+          this.getCartList()
+        } catch (error) {
+          alert(error.message)
+        }
+      }
+
+    },
+    //选中商品的数量
+    isCheckedNum() {
+      return this.cartInfoList.reduce((pre, item) => {
+        if (item.isChecked) {
+          return (pre + item.skuNum)
+        } else {
+          return pre
+        }
+
+      }, 0)
+    },
+    //总价
+    totalPrice() {
+      return this.cartInfoList.reduce((pre, item) => {
+        if (item.isChecked) {
+          return (pre + item.skuPrice * item.skuNum)
+        }
+        else {
+          return pre
+        }
+      }, 0)
+    }
+  },
+  methods: {
+    // 获取商品数据
+    getCartList() {
+      this.$store.dispatch('getShopCartList')
+    },
+    /**修改购物车商品数量 */
+    async changeCartNum(event, cartItem, num, flag) {
+      let skuNum = num
+      if (!flag) {
+        skuNum = num - cartItem.skuNum
+        if (!(num >= 1)) {
+          alert('购物车商品只能为数字且不小于1')
+          event.target.value = cartItem.skuNum
+          return
+        }
+      }
+      if (skuNum + cartItem.skuNum < 1) {
+        alert('购物车商品不能小于1')
+        event.target.value = cartItem.skuNum
+        return
+      }
+      let skuInfo = { skuId: cartItem.skuId, skuNum }
+      try {
+        await this.$store.dispatch('addOrUpdCart', skuInfo)
+        this.getCartList()
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+    /**
+     *修改单个是否选中 
+     */
+    async changeIsChecked(e, cartItem) {
+      let { skuId, isChecked } = cartItem
+      try {
+        await this.$store.dispatch('updCartIsCheck', {
+          skuId,
+          isChecked: isChecked ? 0 : 1
+        })
+        this.getCartList()
+      } catch (error) {
+        e.target.checked = isChecked
+        alert(error.message)
+      }
+    },
+    /**
+  * 删除购物车中单个商品
+  */
+    async delShopCart(skuId) {
+      try {
+        await this.$store.dispatch('delShopCart', skuId)
+        this.getCartList()
+      } catch (error) {
+        alert(error.message)
+      }
+    },
+    /**
+     * 删除购物车中选中商品
+     */
+    async delCheckShopCart() {
+      try {
+        await this.$store.dispatch('delCheckShopCart')
+        this.getCartList()
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+  },
+
+}
 </script>
 
 <style lang="less" scoped>
-  .cart {
-    width: 1200px;
-    margin: 0 auto;
+.cart {
+  width: 1200px;
+  margin: 0 auto;
 
-    h4 {
-      margin: 9px 0;
-      font-size: 14px;
-      line-height: 21px;
-    }
+  h4 {
+    margin: 9px 0;
+    font-size: 14px;
+    line-height: 21px;
+  }
 
-    .cart-main {
-      .cart-th {
-        background: #f5f5f5;
-        border: 1px solid #ddd;
-        padding: 10px;
-        overflow: hidden;
-
-        &>div {
-          float: left;
-        }
-
-        .cart-th1 {
-          width: 25%;
-
-          input {
-            vertical-align: middle;
-          }
-
-          span {
-            vertical-align: middle;
-          }
-        }
-
-        .cart-th2 {
-          width: 25%;
-        }
-
-        .cart-th3,
-        .cart-th4,
-        .cart-th5,
-        .cart-th6 {
-          width: 12.5%;
-
-        }
-      }
-
-      .cart-body {
-        margin: 15px 0;
-        border: 1px solid #ddd;
-
-        .cart-list {
-          padding: 10px;
-          border-bottom: 1px solid #ddd;
-          overflow: hidden;
-
-          &>li {
-            float: left;
-          }
-
-          .cart-list-con1 {
-            width: 4.1667%;
-          }
-
-          .cart-list-con2 {
-            width: 25%;
-
-            img {
-              width: 82px;
-              height: 82px;
-              float: left;
-            }
-
-            .item-msg {
-              float: left;
-              width: 150px;
-              margin: 0 10px;
-              line-height: 18px;
-            }
-          }
-
-          .cart-list-con3 {
-            width: 20.8333%;
-
-            .item-txt {
-              text-align: center;
-            }
-          }
-
-          .cart-list-con4 {
-            width: 12.5%;
-
-          }
-
-          .cart-list-con5 {
-            width: 12.5%;
-
-            .mins {
-              border: 1px solid #ddd;
-              border-right: 0;
-              float: left;
-              color: #666;
-              width: 6px;
-              text-align: center;
-              padding: 8px;
-            }
-
-            input {
-              border: 1px solid #ddd;
-              width: 40px;
-              height: 33px;
-              float: left;
-              text-align: center;
-              font-size: 14px;
-            }
-
-            .plus {
-              border: 1px solid #ddd;
-              border-left: 0;
-              float: left;
-              color: #666;
-              width: 6px;
-              text-align: center;
-              padding: 8px;
-            }
-          }
-
-          .cart-list-con6 {
-            width: 12.5%;
-
-            .sum {
-              font-size: 16px;
-            }
-          }
-
-          .cart-list-con7 {
-            width: 12.5%;
-
-            a {
-              color: #666;
-            }
-          }
-        }
-      }
-    }
-
-    .cart-tool {
-      overflow: hidden;
+  .cart-main {
+    .cart-th {
+      background: #f5f5f5;
       border: 1px solid #ddd;
+      padding: 10px;
+      overflow: hidden;
 
-      .select-all {
-        padding: 10px;
-        overflow: hidden;
+      &>div {
         float: left;
+      }
 
-        span {
-          vertical-align: middle;
-        }
+      .cart-th1 {
+        width: 20%;
 
         input {
           vertical-align: middle;
         }
+
+        span {
+          vertical-align: middle;
+        }
       }
 
-      .option {
+      .cart-th2 {
+        width: 28%;
+      }
+
+      .cart-th3,
+      .cart-th4,
+      .cart-th5,
+      .cart-th6 {
+        width: 13%;
+      }
+    }
+
+    .cart-body {
+      margin: 15px 0;
+      border: 1px solid #ddd;
+
+      .cart-list {
         padding: 10px;
+        border-bottom: 1px solid #ddd;
         overflow: hidden;
-        float: left;
 
-        a {
+        &>li {
           float: left;
-          padding: 0 10px;
-          color: #666;
-        }
-      }
-
-      .money-box {
-        float: right;
-
-        .chosed {
-          line-height: 26px;
-          float: left;
-          padding: 0 10px;
         }
 
-        .sumprice {
-          width: 200px;
-          line-height: 22px;
-          float: left;
-          padding: 0 10px;
+        .cart-list-con1 {
+          line-height: 82px;
+          width: 10%;
 
-          .summoney {
-            color: #c81623;
+          &>input {
+            caret-color: transparent;
+          }
+        }
+
+        .cart-list-con2 {
+          width: 38%;
+
+          img {
+            width: 82px;
+            height: 82px;
+            float: left;
+          }
+
+          .item-msg {
+            float: left;
+            width: 150px;
+            margin: 0 10px;
+            line-height: 18px;
+          }
+        }
+
+        .cart-list-con4 {
+          width: 11%;
+          line-height: 82px;
+        }
+
+        .cart-list-con5 {
+          width: 16%;
+          padding-top: 24.2px;
+
+          .mins {
+            border: 1px solid #ddd;
+            border-right: 0;
+            float: left;
+            color: #666;
+            width: 15px;
+            text-align: center;
+            padding: 8px 0;
+          }
+
+          input {
+            border: 1px solid #ddd;
+            width: 40px;
+            height: 33.6px;
+            float: left;
+            text-align: center;
+            font-size: 14px;
+          }
+
+          .plus {
+            border: 1px solid #ddd;
+            border-left: 0;
+            float: left;
+            color: #666;
+            width: 15px;
+            text-align: center;
+            padding: 8px 0;
+          }
+
+          .mins:hover,
+          .plus:hover {
+            background: #ddd;
+          }
+        }
+
+        .cart-list-con6 {
+          width: 12%;
+          line-height: 82px;
+
+          .sum {
             font-size: 16px;
           }
         }
 
-        .sumbtn {
-          float: right;
+        .cart-list-con7 {
+          width: 13%;
+          line-height: 41px;
 
           a {
-            display: block;
-            position: relative;
-            width: 96px;
-            height: 52px;
-            line-height: 52px;
-            color: #fff;
-            text-align: center;
-            font-size: 18px;
-            font-family: "Microsoft YaHei";
-            background: #e1251b;
-            overflow: hidden;
+            color: #666;
           }
         }
       }
     }
   }
+
+  .cart-tool {
+    overflow: hidden;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+
+    &>* {
+      line-height: 32px;
+    }
+
+    .select-all {
+      padding: 8px;
+      overflow: hidden;
+      float: left;
+
+      span {
+        vertical-align: middle;
+      }
+
+      input {
+        caret-color: transparent;
+        vertical-align: middle;
+      }
+    }
+
+    .option {
+      padding: 10px;
+      overflow: hidden;
+      float: left;
+
+      a {
+        float: left;
+        padding: 0 10px;
+        color: #666;
+      }
+    }
+
+    .money-box {
+      float: right;
+
+      .chosed {
+        float: left;
+        padding: 0 10px;
+        line-height: 50px;
+      }
+
+      .sumprice {
+        width: 200px;
+        float: left;
+        height: 50px;
+        line-height: 50px;
+        padding: 0 10px;
+
+        em {
+          font-size: 14px;
+        }
+
+        .summoney {
+          color: #c81623;
+          font-size: 15px;
+          vertical-align: middle;
+        }
+      }
+
+      .sumbtn {
+        float: right;
+
+        a {
+          display: block;
+          position: relative;
+          width: 96px;
+          height: 52px;
+          line-height: 52px;
+          color: #fff;
+          text-align: center;
+          font-size: 18px;
+          font-family: 'Microsoft YaHei';
+          background: #e1251b;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+}
 </style>
