@@ -11,5 +11,9 @@ Vue.use(VueRouter)
 export default new VueRouter({
 	//模式
 	mode: 'history', //不带#
-	routes
+	routes,
+	scrollBehavior(to, from, savedPosition) {
+		// return 期望滚动到哪个的位置
+		return { x: 0, y: 0 }
+	}
 })

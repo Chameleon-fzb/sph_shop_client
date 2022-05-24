@@ -941,3 +941,16 @@ offsetWidth =
 offsetHeight = 内容高度 + padding + border
 clientHeight = 内容高度 + padding
 scrollHeight = 实际内容高度 + padding
+
+### 跳转到detail页面没有滚动到顶部
+```js
+export default new VueRouter({
+	//模式
+	mode: 'history', //不带#
+	routes,
+	scrollBehavior(to, from, savedPosition) {
+		// return 期望滚动到哪个的位置
+		return { x: 0, y: 0 }
+	}
+})
+```
