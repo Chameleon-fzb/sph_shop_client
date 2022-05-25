@@ -985,3 +985,7 @@ function getUserTempId() {
   
 4) 在每一次发请求时携带唯一标识
    - 在请求拦截器中为config加上临时标识 config.headers.userTempId = userTempId 
+
+
+## 导航守卫
+### 全局路由守卫
