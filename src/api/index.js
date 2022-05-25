@@ -82,3 +82,9 @@ export const reqLogin = userInfo =>
 		method: 'POST',
 		data: userInfo
 	})
+/**根据token获取用户信息 */
+export const reqUserInfo = () =>
+	ajax({
+		url: '/user/passport/auth/getUserInfo',
+		method: 'GET'
+	})

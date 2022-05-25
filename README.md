@@ -990,8 +990,65 @@ function getUserTempId() {
 ## token 验证
 登录后会获得token 
 登录后每次请求都要在请求头添加token
+登录返回的是token 但是用户信息还没有
+根据token自动获取用户信息
+token 校验 还可以验证token是否过期
+
 ## 导航守卫
 有特定的条件才能去特定的页面
 (例如登录才能交易)
 拦截路由 查看是否满足条件,满足放行,不满足的处理
+
+
+登录相关的
+```js
+router.beforeEach(async (to, from, next) => {
+	//token校验
+	let token = store.state.user.token
+	if (token) {
+		//登录了,或者之前登录过
+		if (to.path === '/login') {
+      //去的是登录界面,就直接跳转到首页
+			next('/')
+		} else {
+      //不是登录界面
+      //先判断是否拿到用户信息
+			let hasUserInfo = !!store.state.user.hasUserInfo
+			if (hasUserInfo) {
+        //用户信息获得了,就放行
+				next()
+			}
+			//校验token 获取用户信息
+      //如果没有获得用户信息
+			try {
+        //获取用户信息
+				await store.dispatch('getUserInfo')
+        //成功后,放行
+				next()
+			} catch (error) {
+        //否则清除用户信息
+				alert('登录过期')
+				store.dispatch('resetUserInfo')
+        //重新跳转到登录界面
+				next('/login')
+			}
+		}
+	} else {
+		//用户没登录过
+		//判断用户是否去订单相关的页面, 是就需要先登录
+		next()
+	}
+})
+```
 ### 全局路由守卫
+```js
+router.beforeEach((to,from,next)=>{
+  // to 代表准备去的地方的路由对象
+  //from 从哪个地方来的路由对象
+  //next 是一个函数
+  //next() 无条件放行
+  //next(false) 不放行,停在原地
+  // next('/') next({path:'/'}) 指定去的路由
+})
+
+```
