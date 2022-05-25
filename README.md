@@ -987,5 +987,11 @@ function getUserTempId() {
    - 在请求拦截器中为config加上临时标识 config.headers.userTempId = userTempId 
 
 
+## token 验证
+登录后会获得token 
+登录后每次请求都要在请求头添加token
 ## 导航守卫
+有特定的条件才能去特定的页面
+(例如登录才能交易)
+拦截路由 查看是否满足条件,满足放行,不满足的处理
 ### 全局路由守卫
