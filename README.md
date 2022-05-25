@@ -1040,7 +1040,16 @@ router.beforeEach(async (to, from, next) => {
 	}
 })
 ```
+
+### 产生问题
+1) 如果进入的是其他界面因为没登录而跳转到登录界面,需要在登录成功后跳转到前一个页面
+   - next('/login?redirect=' + to.path)
+   - 在登陆组价中登录中要进行判断是否有redirect query参数
+   -  let redirect = this.$route.query.redirect || '/'
+          this.$router.push(redirect)
+
 ### 全局路由守卫
+
 ```js
 router.beforeEach((to,from,next)=>{
   // to 代表准备去的地方的路由对象

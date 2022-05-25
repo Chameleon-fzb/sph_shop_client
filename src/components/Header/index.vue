@@ -6,9 +6,9 @@
 				<!-- 头部的第一行 登录 -->
 				<div class="loginList">
 					<p>尚品汇欢迎您!</p>
-					<p v-if="false">
-						<a href="javascript:;">xxx</a>
-						<a href="javascript:;" class="register">退出登录</a>
+					<p v-if="$store.state.user.userInfo">
+						<a href="javascript:;">{{ $store.state.user.userInfo.name }}</a>
+						<a href="javascript:;" class="register" @click="logout">退出登录</a>
 					</p>
 					<p v-else>
 						<span>请</span>
@@ -71,6 +71,13 @@ export default {
 					keyword
 				}
 					(this.$route.name === '/search') ? this.$router.replace(location) : this.$router.push(location)
+		},
+		async logout() {
+			try {
+				await this.$store.dispatch("userLogout")
+			} catch (error) {
+				alert(error.message)
+			}
 		}
 	},
 	mounted() {

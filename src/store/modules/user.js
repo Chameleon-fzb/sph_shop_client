@@ -1,5 +1,11 @@
 import { getUserTempId, getToken, setToken } from '@/utils/userAbout'
-import { reqRegister, reqSecurityCode, reqLogin, reqUserInfo } from '@/api'
+import {
+	reqRegister,
+	reqSecurityCode,
+	reqLogin,
+	reqUserInfo,
+	reqUserLogout
+} from '@/api'
 import { removeToken } from '@/utils/userAbout'
 const state = {
 	//获取临时标识id
@@ -44,6 +50,14 @@ const actions = {
 	async resetUserInfo({ commit }) {
 		removeToken()
 		commit('RESET_USER_INFO')
+	},
+	/**退出登录 */
+	async userLogout({ dispatch }) {
+		const result = await reqUserLogout()
+		if (result.code === 200) {
+			dispatch('resetUserInfo')
+			return 'ok'
+		} else return Promise.reject(new Error(result.message))
 	}
 }
 const mutations = {

@@ -47,6 +47,5 @@ router.beforeEach(async (to, from, next) => {
 		next()
 	}
 })
-
 //向外暴露路由器对象
 export default router
