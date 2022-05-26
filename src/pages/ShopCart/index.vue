@@ -19,7 +19,7 @@
           <li class="cart-list-con2">
             <img :src="cartItem.imgUrl" />
             <div class="item-msg">
-              {{ cartItem.skuName.substring(0, 62) + '...' }}
+              {{ cartItem.skuName && cartItem.skuName.substring(0, 62) + '...' }}
             </div>
           </li>
           <li class="cart-list-con4">

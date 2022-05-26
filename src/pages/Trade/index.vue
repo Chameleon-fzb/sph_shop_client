@@ -136,7 +136,7 @@ export default {
           tradeNo,
           tradeData
         })
-        //this.$router.push('/pay?orderNo=' + orderNo)
+        this.$router.push('/pay?orderNo=' + orderNo)
       } catch (error) {
         alert('提交失败：' + error.message)
       }

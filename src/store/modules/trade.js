@@ -1,4 +1,9 @@
-import { reqTradeInfo, reqUserAddressList } from '@/api'
+import {
+	reqTradeInfo,
+	reqUserAddressList,
+	reqSubmitOrder,
+	reqPayInfo
+} from '@/api'
 
 const state = {
 	tradeInfo: {},
