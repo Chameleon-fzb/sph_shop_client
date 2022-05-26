@@ -14,6 +14,14 @@ const actions = {
 	async getUserAddressList({ commit }) {
 		const result = await reqUserAddressList()
 		result.code === 200 && commit('RECEIVE_ADDRESS_LIST', result.data)
+	},
+	/**
+	 *提交订单
+	 */
+	async submitOrder(_, { tradeNo, tradeData }) {
+		const result = await reqSubmitOrder(tradeNo, tradeData)
+		if (result.code === 200) return result.data
+		else return Promise.reject(new Error(result.message))
 	}
 }
 const mutations = {

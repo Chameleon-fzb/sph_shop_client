@@ -120,8 +120,26 @@ export default {
     }
   },
   methods: {
-    submitOrder() {
-
+    /**提交订单 */
+    async submitOrder() {
+      const { tradeNo } = this.tradeInfo
+      const tradeData = {
+        consignee: this.address.consignee,
+        consigneeTel: this.address.phoneNum,
+        deliveryAddress: this.address.userAddress,
+        paymentWay: 'ONLINE',
+        orderComment: this.message,
+        orderDetailList: this.detailArrayList
+      }
+      try {
+        const orderNo = await this.$store.dispatch('submitOrder', {
+          tradeNo,
+          tradeData
+        })
+        //this.$router.push('/pay?orderNo=' + orderNo)
+      } catch (error) {
+        alert('提交失败：' + error.message)
+      }
     },
     /**修改默认地址 */
     changeDefaultAddress(index) {

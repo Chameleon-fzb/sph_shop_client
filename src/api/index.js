@@ -106,3 +106,10 @@ export const reqUserAddressList = () =>
 		url: 'user/userAddress/auth/findUserAddressList',
 		method: 'GET'
 	})
+/**提交订单 */
+export const reqSubmitOrder = (tradeNo, tradeData) =>
+	ajax({
+		url: `/order/auth/submitOrder?tradeNo=${tradeNo}`,
+		method: 'POST',
+		data: tradeData
+	})
