@@ -3,28 +3,12 @@
     <h3 class="title">填写并核对订单信息</h3>
     <div class="content">
       <h5 class="receive">收件人信息</h5>
-      <div class="address clearFix">
-        <span class="username selected">张三</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">15010658793</span>
-          <span class="s3">默认地址</span>
-        </p>
-      </div>
-      <div class="address clearFix">
-        <span class="username selected">李四</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">13590909098</span>
-          <span class="s3">默认地址</span>
-        </p>
-      </div>
-      <div class="address clearFix">
-        <span class="username selected">王五</span>
-        <p>
-          <span class="s1">北京市昌平区宏福科技园综合楼6层</span>
-          <span class="s2">18012340987</span>
-          <span class="s3">默认地址</span>
+      <div class="address clearFix" v-for="(userAddress, index) in userAddressList" :key="userAddress.id">
+        <span class="username" :class="{ selected: userAddress.isDefault === '1' }">{{ userAddress.consignee }}</span>
+        <p @click="changeDefaultAddress(index)">
+          <span class="s1">{{ userAddress.fullAddress }}</span>
+          <span class="s2">{{ userAddress.phoneNum }}</span>
+          <span class="s3" v-if="userAddress.isDefault === '1'">默认地址</span>
         </p>
       </div>
       <div class="line"></div>
@@ -32,7 +16,6 @@
       <div class="address clearFix">
         <span class="username selected">在线支付</span>
         <span class="username" style="margin-left:5px;">货到付款</span>
-
       </div>
       <div class="line"></div>
       <h5 class="pay">送货清单</h5>
@@ -45,41 +28,26 @@
       </div>
       <div class="detail">
         <h5>商品清单</h5>
-        <ul class="list clearFix">
+        <ul class="list clearFix" v-for="goodItem in detailArrayList" :key="goodItem.id">
           <li>
-            <img src="./images/goods.png" alt="">
+            <img :src="goodItem.imgUrl" alt="" width="80px" />
           </li>
           <li>
             <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
+              {{ goodItem.skuName }}
+            </p>
             <h4>7天无理由退货</h4>
           </li>
           <li>
-            <h3>￥5399.00</h3>
+            <h3>￥ {{ goodItem.orderPrice }}</h3>
           </li>
-          <li>X1</li>
-          <li>有货</li>
-        </ul>
-        <ul class="list clearFix">
-          <li>
-            <img src="./images/goods.png" alt="">
-          </li>
-          <li>
-            <p>
-              Apple iPhone 6s (A1700) 64G 玫瑰金色 移动联通电信4G手机硅胶透明防摔软壳 本色系列</p>
-            <h4>7天无理由退货</h4>
-          </li>
-          <li>
-            <h3>￥5399.00</h3>
-          </li>
-          <li>X1</li>
+          <li>X{{ goodItem.skuNum }}</li>
           <li>有货</li>
         </ul>
       </div>
       <div class="bbs">
         <h5>买家留言：</h5>
-        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont"></textarea>
-
+        <textarea placeholder="建议留言前先与商家沟通确认" class="remarks-cont" v-model="message"></textarea>
       </div>
       <div class="line"></div>
       <div class="bill">
@@ -91,8 +59,11 @@
     <div class="money clearFix">
       <ul>
         <li>
-          <b><i>1</i>件商品，总商品金额</b>
-          <span>¥5399.00</span>
+          <b>
+            <i>{{ tradeInfo.totalNum }}</i>
+            件商品，总商品金额
+          </b>
+          <span>¥{{ tradeInfo.originalTotalAmount }}</span>
         </li>
         <li>
           <b>返现：</b>
@@ -105,26 +76,60 @@
       </ul>
     </div>
     <div class="trade">
-      <div class="price">应付金额:　<span>¥5399.00</span></div>
+      <div class="price">
+        应付金额:
+        <span>¥{{ tradeInfo.originalTotalAmount }}</span>
+      </div>
       <div class="receiveInfo">
-        寄送至:
-        <span>北京市昌平区宏福科技园综合楼6层</span>
-        收货人：<span>张三</span>
-        <span>15010658793</span>
+        寄送至：
+        <span>{{ address.userAddress }}</span>
+        收货人：
+        <span>{{ address.consignee }}</span>
+        电话：
+        <span>{{ address.phoneNum }}</span>
       </div>
     </div>
     <div class="sub clearFix">
-      <router-link class="subBtn" to="/pay">提交订单</router-link>
+      <!-- <router-link class="subBtn" to="/pay">提交订单</router-link> -->
+      <a href="javascript:;" class="subBtn" @click="submitOrder">提交订单</a>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
 export default {
   name: 'Trade',
+  data() {
+    return {
+      message: ""
+    }
+  },
   mounted() {
     this.$store.dispatch('getTradeInfo')
     this.$store.dispatch('getUserAddressList')
+  },
+  computed: {
+    ...mapState({
+      tradeInfo: state => state.trade.tradeInfo || {},
+      userAddressList: state => state.trade.userAddressList
+    }),
+    ...mapGetters(['detailArrayList']),
+    address() {
+      return this.userAddressList.find(item => item.isDefault === '1') || {}
+    }
+  },
+  methods: {
+    submitOrder() {
+
+    },
+    /**修改默认地址 */
+    changeDefaultAddress(index) {
+      this.userAddressList.forEach(item => {
+        item.isDefault = '0'
+      })
+      this.userAddressList[index].isDefault = '1'
+    },
   },
 }
 </script>
@@ -166,7 +171,7 @@ export default {
       }
 
       .username::after {
-        content: "";
+        content: '';
         display: none;
         width: 13px;
         height: 13px;
@@ -194,7 +199,6 @@ export default {
 
         .s1 {
           float: left;
-
         }
 
         .s2 {
@@ -237,8 +241,6 @@ export default {
       }
 
       .info {
-        margin-top: 20px;
-
         .s1 {
           float: left;
           border: 1px solid #ddd;
@@ -271,11 +273,11 @@ export default {
         justify-content: space-between;
 
         li {
-          line-height: 30px;
+          line-height: 24px;
 
           p {
-
             margin-bottom: 20px;
+            width: 400px;
           }
 
           h4 {
@@ -284,7 +286,6 @@ export default {
           }
 
           h3 {
-
             color: #e12228;
           }
         }
@@ -370,14 +371,12 @@ export default {
       float: right;
       width: 164px;
       height: 56px;
-      font: 700 18px "微软雅黑";
+      font: 700 18px '微软雅黑';
       line-height: 56px;
       text-align: center;
       color: #fff;
       background-color: #e1251b;
-
     }
   }
-
 }
 </style>
