@@ -94,3 +94,15 @@ export const reqUserLogout = () =>
 		url: '/user/passport/logout',
 		method: 'GET'
 	})
+/*获取订单交易信息  */
+export const reqTradeInfo = () =>
+	ajax({
+		url: '/order/auth/trade',
+		method: 'GET'
+	})
+/**获取地址信息  */
+export const reqUserAddressList = () =>
+	ajax({
+		url: 'user/userAddress/auth/findUserAddressList',
+		method: 'GET'
+	})
