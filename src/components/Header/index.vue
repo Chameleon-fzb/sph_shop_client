@@ -18,7 +18,8 @@
 				</div>
 				<!-- 头部的第一行 导航 -->
 				<div class="typeList">
-					<a href="###">我的订单</a>
+					<router-link to="/center/myOrder">我的订单</router-link>
+					<router-link to="/center/groupOrder">团购订单</router-link>
 					<router-link to="/shopCart">我的购物车</router-link>
 					<a href="###">我的尚品汇</a>
 					<a href="###">尚品汇会员</a>

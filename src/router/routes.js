@@ -8,6 +8,9 @@ import ShopCart from '@/pages/ShopCart'
 import Trade from '@/pages/Trade'
 import Pay from '@/pages/Pay'
 import PaySuccess from '@/pages/PaySuccess'
+import Center from '@/pages/Center'
+import MyOrder from '@/pages/Center/MyOrder'
+import GroupOrder from '@/pages/Center/GroupOrder'
 
 export default [
 	{
@@ -60,5 +63,25 @@ export default [
 	{
 		path: '/paySuccess',
 		component: PaySuccess
+	},
+	{
+		path: '/center',
+		component: Center,
+		// redirect: '/center/myOrder'
+		children: [
+			{
+				path: 'myOrder',
+				component: MyOrder
+			},
+			{
+				path: 'groupOrder',
+				component: GroupOrder
+			},
+			{
+				path: '',
+				//重定向到我的订单
+				redirect: 'myOrder'
+			}
+		]
 	}
 ]

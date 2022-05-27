@@ -125,3 +125,9 @@ export const reqPayStatus = orderId =>
 		url: `/payment/weixin/queryPayStatus/${orderId}`,
 		method: 'GET'
 	})
+/*请求获取我的订单分页列表*/
+export const reqMyOrderInfo = (page, limit) =>
+	ajax({
+		url: `/order/auth/${page}/${limit}`,
+		method: 'GET'
+	})
