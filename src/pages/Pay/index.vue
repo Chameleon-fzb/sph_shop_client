@@ -82,12 +82,15 @@
 </template>
 
 <script>
+import QRCode from 'qrcode'
 import { mapState } from 'vuex'
 export default {
   name: 'Pay',
   data() {
     return {
-      orderNo: ''
+      orderNo: '',
+      timer: null,
+      payStatus: 0
     }
   },
   created() {
@@ -102,9 +105,68 @@ export default {
     ...mapState({ payInfo: state => state.pay.payInfo })
   },
   methods: {
-    pay() { }
-  },
+    async pay() {
+      try {
+        const imgUrl = await QRCode.toDataURL(this.payInfo.codeUrl)
+        this.$alert(`<img src="${imgUrl}">`, '请使用微信支付', {
+          dangerouslyUseHTMLString: true,
+          center: true,
+          lockScroll: false,
+          showClose: false,
+          showConfirmButton: true,
+          showCancelButton: true,
+          cancelButtonText: '支付遇到问题',
+          confirmButtonText: '我已经成功支付',
+          beforeClose: (action, instance, done) => {
+            //点击确认按钮
+            if (action === 'confirm') {
+              if (this.payStatus != 200) {
+                this.$message.info('请确保支付成功，成功会自动跳转')
+              }
+            } else if (action === 'cancel') {
+              this.$message.info('请联系客服')
+              clearInterval(this.timer)
+              this.timer = null
+              done()
+            }
 
+          }
+        }).then()//点击确认按钮,执行的操作
+          .catch()//点击取消哦按钮,执行的操作
+        //这两个操作都会强制关闭messageBox
+        if (!this.timer) {
+          //轮询请求支付状态
+          this.timer = setInterval(async () => {
+            try {
+              const result = await this.$store.dispatch('getPayStatus', this.orderNo)
+              if (result.code === 200) {
+                // 1 清除定时器
+                clearInterval(this.timer)
+                this.timer = null
+                // 2 关闭弹消息框
+                this.$msgbox.close()
+                // 3 存储支付成功的状态
+                this.payStatus = 200
+                // 4 跳转页面
+                // this.$router.push('/paySuccess')
+              }
+            } catch (error) {
+              console.log(error.message)
+            }
+
+          }, 2000)
+        }
+
+
+
+      } catch (error) {
+        console.log('二维码生成失败')
+      }
+
+
+    }
+
+  }
 }
 
 </script>
