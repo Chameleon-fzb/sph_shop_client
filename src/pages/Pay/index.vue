@@ -120,9 +120,16 @@ export default {
           beforeClose: (action, instance, done) => {
             //点击确认按钮
             if (action === 'confirm') {
-              if (this.payStatus != 200) {
-                this.$message.info('请确保支付成功，成功会自动跳转')
-              }
+              // if (this.payStatus != 200) {
+              //   this.$message.info('请确保支付成功，成功会自动跳转')
+              // }
+              //设置后门
+              clearInterval(this.timer)
+              this.timer = null
+              done()
+              this.$router.push('/paySuccess')
+
+
             } else if (action === 'cancel') {
               this.$message.info('请联系客服')
               clearInterval(this.timer)
@@ -148,7 +155,7 @@ export default {
                 // 3 存储支付成功的状态
                 this.payStatus = 200
                 // 4 跳转页面
-                // this.$router.push('/paySuccess')
+                this.$router.push('/paySuccess')
               }
             } catch (error) {
               console.log(error.message)
