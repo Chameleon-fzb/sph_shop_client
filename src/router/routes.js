@@ -1,16 +1,17 @@
-import Home from '@/pages/Home'
-import Search from '@/pages/Search'
-import Register from '@/pages/Register'
-import Login from '@/pages/Login'
-import Detail from '@/pages/Detail'
-import AddCartSuccess from '@/pages/AddCartSuccess'
-import ShopCart from '@/pages/ShopCart'
-import Trade from '@/pages/Trade'
-import Pay from '@/pages/Pay'
-import PaySuccess from '@/pages/PaySuccess'
-import Center from '@/pages/Center'
-import MyOrder from '@/pages/Center/MyOrder'
-import GroupOrder from '@/pages/Center/GroupOrder'
+// import Home from '@/pages/Home'
+const Home = () => import('@/pages/Home')
+const Search = () => import('@/pages/Search')
+const Login = () => import('@/pages/Login')
+const Register = () => import('@/pages/Register')
+const Detail = () => import('@/pages/Detail')
+const AddCartSuccess = () => import('@/pages/AddCartSuccess')
+const ShopCart = () => import('@/pages/ShopCart')
+const Trade = () => import('@/pages/Trade')
+const Pay = () => import('@/pages/Pay')
+const PaySuccess = () => import('@/pages/PaySuccess')
+const Center = () => import('@/pages/Center')
+const MyOrder = () => import('@/pages/Center/MyOrder')
+const GroupOrder = () => import('@/pages/Center/GroupOrder')
 import store from '@/store'
 
 export default [

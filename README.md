@@ -1172,3 +1172,30 @@ if (
 ### 使用路由懒加载
 使用 vue-lazyload
 yarn add vue-lazyload
+
+将:src 替换为 v-lazy
+
+### 使用import函数实现路由懒加载
+```js
+const Home = () => import('@/pages/Home')
+const Search = () => import('@/pages/Search')
+const Login = () => import('@/pages/Login')
+const Register = () => import('@/pages/Register')
+const Detail = () => import('@/pages/Detail')
+const AddCartSuccess = () => import('@/pages/AddCartSuccess')
+const ShopCart = () => import('@/pages/ShopCart')
+const Trade = () => import('@/pages/Trade')
+const Pay = () => import('@/pages/Pay')
+const PaySuccess = () => import('@/pages/PaySuccess')
+const Center = () => import('@/pages/Center')
+const MyOrder = () => import('@/pages/Center/MyOrder')
+const GroupOrder = () => import('@/pages/Center/GroupOrder')
+```
+import from 这样的写法
+一个是同步引入,从上往下执行引入
+它不能动态引入
+打包的时候会打包在同一个包中
+效率较慢,首页加载时间长
+
+import函数可以让路由组件单独打包,支持动态引入
+效率高,可以优化首屏显示
