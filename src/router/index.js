@@ -38,12 +38,18 @@ router.beforeEach(async (to, from, next) => {
 			} catch (error) {
 				alert('登录过期')
 				store.dispatch('resetUserInfo')
-				next('/login')
+				next('/login?redirect=' + to.path)
 			}
 		}
 	} else {
 		//用户没登录过
-		//判断用户是否去订单相关的页面, 是就需要先登录
+		if (
+			to.path.startsWith('/trade') ||
+			to.path.startsWith('/pay') ||
+			to.path.startsWith('/center')
+		) {
+			next('/login?redirect=' + to.path)
+		}
 		next()
 	}
 })

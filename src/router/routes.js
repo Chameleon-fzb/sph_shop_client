@@ -11,6 +11,7 @@ import PaySuccess from '@/pages/PaySuccess'
 import Center from '@/pages/Center'
 import MyOrder from '@/pages/Center/MyOrder'
 import GroupOrder from '@/pages/Center/GroupOrder'
+import store from '@/store'
 
 export default [
 	{
@@ -20,7 +21,15 @@ export default [
 	{
 		path: '/login',
 		component: Login,
-		meta: { isHideFooter: true }
+		meta: { isHideFooter: true },
+		beforeEnter: (to, from, next) => {
+			const token = store.state.user.token
+			if (token) {
+				next('/')
+			} else {
+				next()
+			}
+		}
 	},
 	{
 		path: '/register',
@@ -46,7 +55,16 @@ export default [
 
 	{
 		path: '/addCartSuccess',
-		component: AddCartSuccess
+		component: AddCartSuccess,
+		beforeEnter: (to, from, next) => {
+			let skuNum = to.query.skuNum
+			let skuInfo = sessionStorage.getItem('SKU_INFO_KEY')
+			if (skuNum && skuInfo) {
+				next()
+			} else {
+				next('/')
+			}
+		}
 	},
 	{
 		path: '/shopCart',
@@ -54,15 +72,36 @@ export default [
 	},
 	{
 		path: '/trade',
-		component: Trade
+		component: Trade,
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/shopCart') {
+				next()
+			} else {
+				next('/')
+			}
+		}
 	},
 	{
 		path: '/pay',
-		component: Pay
+		component: Pay,
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/trade') {
+				next()
+			} else {
+				next('/')
+			}
+		}
 	},
 	{
 		path: '/paySuccess',
-		component: PaySuccess
+		component: PaySuccess,
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/pay') {
+				next()
+			} else {
+				next('/')
+			}
+		}
 	},
 	{
 		path: '/center',

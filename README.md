@@ -1085,4 +1085,85 @@ router.beforeEach((to,from,next)=>{
   action 代表当前是确认(confirm)还是取消(cancel)
   - 如果是action==='confirm' 就判断支付状态 如果为200 则支付成功,清除定时器,关闭msgBox,并跳转路由
     如果未成功支付 弹出'请确保支付成功，成功会自动跳转'消息框
-  - 如果是action==='cancel' 就清除清除定时器,弹出请联系客服的消息框,关闭msgBox,
+  - 如果是action==='cancel' 就清除清除定时器,弹出请联系客服的消息框,关闭msgBox
+
+## 只有登录的用户才能访问订单相关的页面
+
+```js
+//用户没登录过
+		const List = [
+			'/trade',
+			'/pay',
+			'/paySuccess',
+			'/center',
+			'/center/MyOrder',
+			'/center/GroupOrder'
+		]
+		if (List.includes(to.path)) {
+			next('/login?redirect=' + to.path)
+		}
+		//判断用户是否去订单相关的页面, 是就需要先登录
+		next()
+```
+
+```js
+if (
+			to.path.startsWith('/trade') ||
+			to.path.startsWith('/pay') ||
+			to.path.startsWith('/center')
+		) {
+			next('/login?redirect=' + to.path)
+		}
+		next()
+```
+## 路由跳转权限(路由独享守卫)
+
+### 只有携带了skuNum 和 sessionStorage 内部有skuInfo数据 才能添加购物车成功的界面
+```js
+		beforeEnter: (to, from, next) => {
+			let skuNum = to.query.skuNum
+			let skuInfo = sessionStorage.getItem('SKU_INFO_KEY')
+			if (skuNum && skuInfo) {
+				next()
+			} else {
+				next('/')
+			}
+		}
+```
+
+### 只有从购物车界面才能跳转到交易页面(创建订单)
+```js
+
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/shopCart') {
+				next()
+			} else {
+				next('/')
+			}
+		}
+```
+### 只有从交易页面 才能跳转到支付页面
+```js
+
+	{
+		path: '/pay',
+		component: Pay,
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/trade') {
+				next()
+			} else {
+				next('/')
+			}
+		}
+	},
+```
+### 只有从支付页面才能调到支付成功的界面
+```js
+		beforeEnter: (to, from, next) => {
+			if (from.path === '/pay') {
+				next()
+			} else {
+				next('/')
+			}
+		}
+```
