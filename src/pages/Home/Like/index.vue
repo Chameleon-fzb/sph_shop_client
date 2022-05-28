@@ -8,7 +8,7 @@
       <div class="bd">
         <ul class="favourate">
           <li v-for="like in likes.likeList" :key="like.id">
-            <img :src="like.imageUrl" alt="" />
+            <img v-lazy="like.imageUrl" alt="" />
             <div class="like-text">
               <p>{{ like.text }}</p>
               <h3>{{ like.price }}</h3>

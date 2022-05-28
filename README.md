@@ -597,7 +597,7 @@ mounted() {
    ```html
      <swiper :options="swiperOptions">
           <swiper-slide class="swiper-slide" v-for="banner in bannerList" :key="banner.id">
-            <img :src="banner.imageUrl" />
+            <img v-lazy="banner.imageUrl" />
           </swiper-slide>
           <div class="swiper-pagination" slot="pagination"></div>
           <div class="swiper-button-prev" slot="button-prev"></div>
@@ -890,10 +890,10 @@ v-for和v-if优先级
 ```html
 <template>
   <div class="spec-preview">
-    <img :src="currentImg.imgUrl" />
+    <img v-lazy="currentImg.imgUrl" />
     <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="currentImg.imgUrl" ref="bigImg" />
+      <img v-lazy="currentImg.imgUrl" ref="bigImg" />
     </div>
     <div class="mask" ref="mask"></div>
   </div>
@@ -1167,3 +1167,8 @@ if (
 			}
 		}
 ```
+
+## 优化
+### 使用路由懒加载
+使用 vue-lazyload
+yarn add vue-lazyload

@@ -10,6 +10,7 @@ import './mock/mockServer'
 
 import './plugins/swiper'
 import './plugins/element'
+import './plugins/lazyLoad'
 
 //不显示非生产环境打包的提示
 Vue.config.productionTip = false

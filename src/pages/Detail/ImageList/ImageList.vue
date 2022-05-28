@@ -1,7 +1,7 @@
 <template>
   <swiper :options="options">
     <swiper-slide class="swiper-slide" v-for="(img, index) in imgList" :key="img.id">
-      <img :src="img.imgUrl" :class='{ active: index === currentIndex }' @click="changeCurrentIndex(index)" />
+      <img v-lazy="img.imgUrl" :class='{ active: index === currentIndex }' @click="changeCurrentIndex(index)" />
     </swiper-slide>
     <div class="swiper-button-prev" slot="button-prev"></div>
     <div class="swiper-button-next" slot="button-next"></div>

@@ -19,12 +19,12 @@
               <ul class="jd-list">
                 <li v-for="(keyword, index) in floor.keywords" :key="index">{{ keyword }}</li>
               </ul>
-              <img :src="floor.imgUrl" />
+              <img v-lazy="floor.imgUrl" />
             </div>
             <div class="floorBanner">
               <swiper :options="swiperOptions">
                 <swiper-slide class="swiper-slide" v-for="carousel in floor.carouselList" :key="carousel.id">
-                  <img :src="carousel.imageUrl" />
+                  <img v-lazy="carousel.imageUrl" />
                 </swiper-slide>
                 <div class="swiper-pagination" slot="pagination"></div>
                 <div class="swiper-button-prev" slot="button-prev"></div>
@@ -34,16 +34,16 @@
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit" v-for="item in recommend1" :key="item.id">
-                <img :src="item" />
+                <img v-lazy="item" />
               </div>
             </div>
             <div class="split center">
-              <img :src="floor.bigImg" />
+              <img v-lazy="floor.bigImg" />
             </div>
             <div class="split">
               <span class="floor-x-line"></span>
               <div class="floor-conver-pit" v-for="item in recommend2" :key="item.id">
-                <img :src="item" />
+                <img v-lazy="item" />
               </div>
             </div>
           </div>

@@ -36,7 +36,7 @@
 						<tr v-for="(orderGoodsItem, index) in record.orderDetailList" :key="orderGoodsItem.id">
 							<td width="60%">
 								<div class="typographic">
-									<img :src="orderGoodsItem.imgUrl" width="80px" height="80px" />
+									<img v-lazy="orderGoodsItem.imgUrl" width="80px" height="80px" />
 									<a href="#" class="block-text">
 										{{ orderGoodsItem.skuName }}
 									</a>

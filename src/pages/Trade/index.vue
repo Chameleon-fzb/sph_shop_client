@@ -30,7 +30,7 @@
         <h5>商品清单</h5>
         <ul class="list clearFix" v-for="goodItem in detailArrayList" :key="goodItem.id">
           <li>
-            <img :src="goodItem.imgUrl" alt="" width="80px" />
+            <img v-lazy="goodItem.imgUrl" alt="" width="80px" />
           </li>
           <li>
             <p>
