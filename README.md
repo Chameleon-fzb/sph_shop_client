@@ -1199,3 +1199,16 @@ import from 这样的写法
 
 import函数可以让路由组件单独打包,支持动态引入
 效率高,可以优化首屏显示
+
+### 使用vee-validate 做表单验证
+
+ yarn add vee-validate@3
+
+ 引入
+ ```js
+import Vue from 'vue'
+import { ValidationProvider } from 'vee-validate'
+
+Vue.component('ValidationProvider', ValidationProvider)
+
+ ```

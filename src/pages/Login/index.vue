@@ -15,19 +15,27 @@
 
           <div class="content">
             <form action="##">
-              <div class="input-text clearFix">
-                <span></span>
-                <input type="text" placeholder="邮箱/用户名/手机号" v-model="phone">
-              </div>
-              <div class="input-text clearFix">
-                <span class="pwd"></span>
-                <input type="text" placeholder="请输入密码" v-model="password">
-              </div>
+              <ValidationProvider rules="required|isPhone" name="手机号码" v-slot="{ errors }">
+                <div class="input-text clearFix">
+                  <span></span>
+                  <input type="text" placeholder="邮箱/用户名/手机号" v-model="phone">
+                  <p class="error-msg">{{ errors[0] }}</p>
+                </div>
+              </ValidationProvider>
+              <ValidationProvider rules="required|password" name="密码" v-slot="{ errors }">
+                <div class="input-text clearFix">
+                  <span class="pwd"></span>
+                  <input type="text" placeholder="请输入密码" v-model="password">
+                  <p class="error-msg">{{ errors[0] }}</p>
+                </div>
+              </ValidationProvider>
               <div class="setting clearFix">
+
                 <label class="checkbox inline">
                   <input name="m1" type="checkbox" value="2" checked="">
                   自动登录
                 </label>
+
                 <span class="forget">忘记密码？</span>
               </div>
               <button class="btn" @click.prevent="login">登&nbsp;&nbsp;录</button>
@@ -171,9 +179,10 @@ export default {
               width: 37px;
               height: 32px;
               border: 1px solid #ccc;
-              background: url(../Home/images/icons.png) no-repeat -10px -201px;
+              background: url(../../assets/images/icons.png) no-repeat -10px -201px;
               box-sizing: border-box;
               border-radius: 2px 0 0 2px;
+              margin-bottom: 16px;
             }
 
             .pwd {
