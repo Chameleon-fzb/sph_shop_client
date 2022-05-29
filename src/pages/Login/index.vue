@@ -14,7 +14,8 @@
           </ul>
 
           <div class="content">
-            <form action="##">
+            <ValidationObserver tag="form" ref="obs">
+              <!-- <form action="##"> -->
               <ValidationProvider rules="required|isPhone" name="手机号码" v-slot="{ errors }">
                 <div class="input-text clearFix">
                   <span></span>
@@ -30,17 +31,15 @@
                 </div>
               </ValidationProvider>
               <div class="setting clearFix">
-
                 <label class="checkbox inline">
                   <input name="m1" type="checkbox" value="2" checked="">
                   自动登录
                 </label>
-
                 <span class="forget">忘记密码？</span>
               </div>
               <button class="btn" @click.prevent="login">登&nbsp;&nbsp;录</button>
-            </form>
-
+              <!-- </form> -->
+            </ValidationObserver>
             <div class="call clearFix">
               <ul>
                 <li><img src="./images/qq.png" alt=""></li>
@@ -84,17 +83,17 @@ export default {
   },
   methods: {
     async login() {
+      const result = await this.$refs.obs.validate()
+      if (!result) return
       let { phone, password } = this
-      if (phone && password) {
-        //发请求
-        try {
-          await this.$store.dispatch('userLogin', { phone, password })
-          alert('登录成功')
-          let redirect = this.$route.query.redirect || '/'
-          this.$router.push(redirect)
-        } catch (error) {
-          alert(error.message)
-        }
+      //发请求
+      try {
+        await this.$store.dispatch('userLogin', { phone, password })
+        alert('登录成功')
+        let redirect = this.$route.query.redirect || '/'
+        this.$router.push(redirect)
+      } catch (error) {
+        alert(error.message)
       }
     }
   }

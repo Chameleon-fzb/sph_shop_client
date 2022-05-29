@@ -1,9 +1,15 @@
 import Vue from 'vue'
-import { ValidationProvider, extend, localize } from 'vee-validate'
+import {
+	ValidationObserver,
+	ValidationProvider,
+	extend,
+	localize
+} from 'vee-validate'
 // 引入验证规则，可以自定义，如下的isPhone
 import { required } from 'vee-validate/dist/rules'
 
 Vue.component('ValidationProvider', ValidationProvider)
+Vue.component('ValidationObserver', ValidationObserver)
 // 汉化
 import zhCN from 'vee-validate/dist/locale/zh_CN.json'
 // 汉化

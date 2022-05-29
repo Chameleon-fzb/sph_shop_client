@@ -1212,3 +1212,37 @@ import { ValidationProvider } from 'vee-validate'
 Vue.component('ValidationProvider', ValidationProvider)
 
  ```
+
+```vue
+<ValidationObserver  tag="form" ref="obs">
+      <ValidationProvider rules="required|isPhone" name="手机号码" v-slot="{ errors }">
+       <div class="input-text clearFix">
+          <span></span>
+          <input type="text" placeholder="邮箱/用户名/手机号" v-model="phone">
+          <p class="error-msg">{{ errors[0] }}</p>
+        </div>
+      </ValidationProvider>
+      <button class="btn" @click.prevent="login">登&nbsp;&nbsp;录</button>
+ </ValidationObserver>
+ ```
+ ```js
+ async login() {
+      const result = await this.$refs.obs.validate()
+      if (!result) return
+      let { phone, password } = this
+      //发请求
+      try {
+        await this.$store.dispatch('userLogin', { phone, password })
+        alert('登录成功')
+        let redirect = this.$route.query.redirect || '/'
+        this.$router.push(redirect)
+      } catch (error) {
+        alert(error.message)
+      }
+    }
+ ```
+ 做提交前的认证
+ ```js
+  const result = await this.$refs.obs.validate()
+  if (!result) return
+```
